@@ -1,0 +1,933 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Curso interactivo sobre los capítulos 1 a 4 del Qlik Sense Cookbook, con laboratorios de sintaxis y un cuestionario por módulo.">
+<style>
+html,body{margin:0}
+body{-webkit-text-size-adjust:100%}
+img{max-width:100%}
+[hidden]{display:none!important}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+</style>
+<title>Laboratorio Qlik Sense</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Sans+Condensed:wght@600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: banda de portada a todo el ancho; debajo, índice lateral fijo + columna de lecciones. Cada lección = explicación + laboratorio (controles | resultado). */
+:root{
+  --bg:#F2F4F1; --surface:#FFFFFF; --surface-2:#E9ECE7; --ink:#16212B; --muted:#55606A; --line:#D5DAD4;
+  --accent:#0B6B6A; --accent-ink:#FFFFFF; --accent-soft:#DCEEEC; --warn:#A8521A; --warn-soft:#F8E6D8;
+  --ok:#2C7A4B; --ok-soft:#DDF0E3; --bad:#B3261E; --bad-soft:#F8DEDB; --code-bg:#EBEEE9; --code-ink:#1D2A35; --code-dim:#6B7680;
+  --band:#16212B; --band-ink:#F2F4F1; --band-muted:#A9B6C0; --band-accent:#5FC4C2;
+  --c1:#2F6FB0; --c2:#D07A2B; --c3:#3E9B6A; --c4:#8A5BB5;
+  --f-display:'IBM Plex Sans Condensed','IBM Plex Sans',Arial,sans-serif;
+  --f-body:'IBM Plex Sans',Arial,sans-serif;
+  --f-mono:'JetBrains Mono','Courier New',monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10171D; --surface:#17212A; --surface-2:#1E2A35; --ink:#E6ECEF; --muted:#9AA8B2; --line:#2A3742;
+  --accent:#4FC1BE; --accent-ink:#0D1A1A; --accent-soft:#163A3A; --warn:#E8A15A; --warn-soft:#3A2A1C;
+  --ok:#6CC08F; --ok-soft:#183324; --bad:#F08A80; --bad-soft:#3D1D1A; --code-bg:#0D1419; --code-ink:#DCE4E8; --code-dim:#7D8B95;
+  --band:#0B1116; --band-ink:#E6ECEF; --band-muted:#8FA0AB; --band-accent:#5FC4C2;
+  --c1:#6FA6E0; --c2:#E89A55; --c3:#6CC08F; --c4:#B48BDD; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10171D; --surface:#17212A; --surface-2:#1E2A35; --ink:#E6ECEF; --muted:#9AA8B2; --line:#2A3742;
+  --accent:#4FC1BE; --accent-ink:#0D1A1A; --accent-soft:#163A3A; --warn:#E8A15A; --warn-soft:#3A2A1C;
+  --ok:#6CC08F; --ok-soft:#183324; --bad:#F08A80; --bad-soft:#3D1D1A; --code-bg:#0D1419; --code-ink:#DCE4E8; --code-dim:#7D8B95;
+  --band:#0B1116; --band-ink:#E6ECEF; --band-muted:#8FA0AB; --band-accent:#5FC4C2;
+  --c1:#6FA6E0; --c2:#E89A55; --c3:#6CC08F; --c4:#B48BDD; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--band)}
+a{color:var(--accent)}
+h1,h2,h3,h4{text-wrap:balance;margin:0;line-height:1.15}
+p{margin:0}
+code,.mono{font-family:var(--f-mono);font-size:.88em}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* Portada */
+.hero{background:var(--band);color:var(--band-ink)}
+.hero .wrap{padding-block:56px 48px;display:grid;gap:28px}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.hero .eyebrow{color:var(--band-accent)}
+.hero h1{font-family:var(--f-display);font-weight:700;font-size:clamp(40px,7vw,76px);letter-spacing:-.01em}
+.hero .lede{font-size:19px;color:var(--band-muted);max-width:62ch}
+.hero-code{font-family:var(--f-mono);font-size:14px;line-height:1.7;color:var(--band-muted);border-left:3px solid var(--band-accent);padding:4px 0 4px 16px;max-width:100%;overflow-x:auto;white-space:pre}
+.hero-code b{color:var(--band-ink);font-weight:600}
+.modcards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:860px){.modcards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:440px){.modcards{grid-template-columns:1fr}}
+.modcard{display:flex;flex-direction:column;gap:6px;padding:16px;border:1px solid #2C3A46;border-radius:var(--r);color:var(--band-ink);text-decoration:none;background:rgba(255,255,255,.03)}
+.modcard:hover{border-color:var(--band-accent)}
+.modcard .n{font-family:var(--f-mono);font-size:13px;color:var(--band-accent)}
+.modcard strong{font-size:17px}
+.modcard span.s{font-size:14px;color:var(--band-muted)}
+.modcard .st{font-size:13px;color:var(--band-muted)}
+
+/* Estructura */
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px;padding-block:40px 80px}
+@media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr);gap:16px;padding-block:16px 64px}}
+nav.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);align-self:start;display:flex;flex-direction:column;gap:4px}
+nav.toc a{display:flex;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:15px}
+nav.toc a:hover{background:var(--surface-2)}
+nav.toc .tag{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+nav.toc .tag.done{color:var(--ok);font-weight:600}
+nav.toc .label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:0 10px 6px}
+.theme-row{margin-top:16px;padding:0 10px;display:flex;gap:6px;flex-wrap:wrap}
+.theme-row button{font:inherit;font-size:13px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.theme-row button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+@media (max-width:900px){
+  nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;flex-direction:row;overflow-x:auto;background:var(--bg);padding-block:8px;border-bottom:1px solid var(--line)}
+  nav.toc .label,.theme-row{display:none}
+  nav.toc a{white-space:nowrap;border:1px solid var(--line)}
+}
+main{display:flex;flex-direction:column;gap:72px;min-width:0}
+.module{display:flex;flex-direction:column;gap:40px;scroll-margin-top:24px}
+.mod-head{display:grid;gap:10px;border-top:2px solid var(--ink);padding-top:20px}
+.mod-head h2{font-family:var(--f-display);font-size:clamp(30px,4.4vw,44px);font-weight:700}
+.mod-head p{color:var(--muted);max-width:66ch;font-size:17px}
+.lesson{display:grid;gap:16px;scroll-margin-top:24px}
+.lesson h3{font-size:24px;font-weight:600}
+.lesson .num{font-family:var(--f-mono);font-size:14px;color:var(--accent);margin-right:8px}
+.lesson .body{display:grid;gap:10px;max-width:70ch}
+.lesson .body p{color:var(--ink)}
+.practice{font-size:15px;color:var(--muted);border-left:3px solid var(--warn);padding-left:12px;max-width:70ch}
+.practice b{color:var(--warn)}
+
+/* Laboratorio */
+.lab{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden}
+@media (max-width:760px){.lab{grid-template-columns:minmax(0,1fr)}}
+.lab .ctrl{padding:20px;display:flex;flex-direction:column;gap:16px;background:var(--surface-2);min-width:0}
+.lab .out{padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.lab-title{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field>label,.field>.lbl{font-size:14px;font-weight:600}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button,.btn{font:inherit;font-size:14px;padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;text-align:left}
+.seg button:hover,.btn:hover{border-color:var(--accent)}
+.seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;cursor:pointer}
+.check input{margin-top:3px;accent-color:var(--accent);width:16px;height:16px;flex:none}
+select,input[type=text],input[type=number]{font:inherit;font-size:14px;padding:7px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);max-width:100%}
+input[type=range]{accent-color:var(--accent);width:100%}
+.range-row{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+pre.code{margin:0;font-family:var(--f-mono);font-size:13.5px;line-height:1.65;background:var(--code-bg);color:var(--code-ink);border-radius:8px;padding:14px 16px;overflow-x:auto;white-space:pre}
+pre.code .c{color:var(--code-dim)}
+pre.code .k{color:var(--accent);font-weight:600}
+pre.code .hl{background:var(--warn-soft);color:var(--warn);border-radius:3px;padding:0 2px}
+.status{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:8px;font-size:14px}
+.status .pill{flex:none;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px}
+.status.ok{background:var(--ok-soft)}.status.ok .pill{background:var(--ok);color:var(--surface)}
+.status.bad{background:var(--bad-soft)}.status.bad .pill{background:var(--bad);color:var(--surface)}
+.status.warn{background:var(--warn-soft)}.status.warn .pill{background:var(--warn);color:var(--surface)}
+.status.info{background:var(--accent-soft)}.status.info .pill{background:var(--accent);color:var(--accent-ink)}
+.tbl-wrap{overflow-x:auto}
+table.t{border-collapse:collapse;font-size:14px;width:100%;font-variant-numeric:tabular-nums}
+table.t th,table.t td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.t th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+table.t td.num,table.t th.num{text-align:right}
+table.t tr.miss td{color:var(--bad)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;font-size:14px;font-variant-numeric:tabular-nums}
+.kv dt{color:var(--muted)}.kv dd{margin:0;font-weight:600}
+.row{display:flex;gap:14px;flex-wrap:wrap}
+.row>*{flex:1 1 220px;min-width:0}
+.mini{border:1px solid var(--line);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.mini .h{font-size:13px;color:var(--muted)}
+.mini .v{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
+.chart svg{display:block;width:100%;height:auto;max-width:100%}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.log{font-family:var(--f-mono);font-size:13px;line-height:1.7;background:var(--code-bg);color:var(--code-ink);border-radius:8px;padding:12px 14px;overflow-x:auto;white-space:pre}
+.log .e{color:var(--bad);font-weight:600}.log .o{color:var(--ok)}.log .w{color:var(--warn)}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:560px){.steps{grid-template-columns:1fr}}
+.step{border:1px solid var(--line);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:4px;background:var(--surface)}
+.step.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.step .k{font-family:var(--f-mono);font-size:12px;color:var(--accent)}
+.copy{align-self:flex-start}
+
+/* Cuestionario */
+.quiz{border:1px solid var(--ink);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:20px;background:var(--surface)}
+.quiz-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+.quiz-head h3{font-size:22px}
+.quiz-best{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+fieldset.q{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+fieldset.q legend{font-weight:600;padding:0;margin-bottom:6px}
+fieldset.q label{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;font-size:15px}
+fieldset.q label:hover{border-color:var(--accent)}
+fieldset.q input{margin-top:4px;accent-color:var(--accent);flex:none}
+fieldset.q label.right{border-color:var(--ok);background:var(--ok-soft)}
+fieldset.q label.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.fb{font-size:14px;color:var(--muted)}
+.fb b.r{color:var(--ok)}.fb b.w{color:var(--bad)}
+.quiz-foot{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.score{font-weight:700;font-variant-numeric:tabular-nums}
+
+/* Recursos */
+.book{display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;align-items:start;border:1px solid var(--line);border-radius:var(--r);padding:24px;background:var(--surface)}
+@media (max-width:560px){.book{grid-template-columns:1fr}}
+.spine{width:120px;height:160px;border-radius:4px 8px 8px 4px;background:var(--band);color:var(--band-ink);display:flex;flex-direction:column;justify-content:space-between;padding:14px;font-family:var(--f-display);font-weight:700;font-size:18px;line-height:1.1;border-left:8px solid var(--band-accent)}
+.spine small{font-family:var(--f-mono);font-weight:400;font-size:11px;color:var(--band-muted)}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+footer .wrap{padding-block:24px}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Qlik Sense Cookbook · Capítulos 1 a 4</p>
+    <h1>Laboratorio Qlik Sense</h1>
+    <p class="lede">Las ideas principales del libro, con ejemplos que podés manipular: cambiá una opción y mirá cómo responde el script, el modelo o el gráfico. Cada módulo termina con un cuestionario corto.</p>
+    <div class="hero-code" aria-label="Ejemplo de script">// Variables necesarias
+<b>$(Must_Include=lib://Scripts/Variables.qvs);</b>
+// Configuraciones opcionales
+<b>$(Include=lib://Scripts/Colores.qvs);</b></div>
+    <div class="modcards" id="modcards"></div>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <nav class="toc" aria-label="Módulos">
+    <p class="label">Módulos</p>
+    <a href="#m1"><span>1 · Datos</span><span class="tag" data-tag="m1"></span></a>
+    <a href="#m2"><span>2 · Visualizaciones</span><span class="tag" data-tag="m2"></span></a>
+    <a href="#m3"><span>3 · Scripting</span><span class="tag" data-tag="m3"></span></a>
+    <a href="#m4"><span>4 · Apps e interfaz</span><span class="tag" data-tag="m4"></span></a>
+    <a href="#recursos"><span>Recursos</span><span class="tag"></span></a>
+  </nav>
+
+  <main>
+  <!-- ============ MÓDULO 1 ============ -->
+  <section class="module" id="m1">
+    <div class="mod-head">
+      <p class="eyebrow">Módulo 1 · Capítulo 1</p>
+      <h2>Datos: conectar, revisar y reutilizar</h2>
+      <p>Cómo llegan los datos a la app, cómo revisar el modelo antes de construir y por qué cada KPI debería definirse una sola vez.</p>
+    </div>
+
+    <article class="lesson" id="l-conexiones">
+      <h3><span class="num">1.1</span>Conectar cualquier fuente</h3>
+      <div class="body">
+        <p>Las conexiones se guardan en la biblioteca de Qlik Sense y el script las usa por nombre. <code>LIB CONNECT TO</code> funciona como puente entre la app y la base de datos; los archivos se leen con <code>FROM [lib://…]</code>. El libro advierte sobre el <b>Legacy mode</b>: habilita scripts de QlikView, <code>BINARY</code> y <code>CUSTOM CONNECT</code>, pero se pierde el control de las conexiones desde la QMC.</p>
+      </div>
+      <div class="lab" id="lab-conn">
+        <div class="ctrl">
+          <p class="lab-title">Probalo</p>
+          <div class="field"><span class="lbl">Tipo de fuente</span><div class="seg" data-role="src"></div></div>
+          <div class="status info" data-role="note"></div>
+        </div>
+        <div class="out">
+          <p class="lab-title">Script resultante</p>
+          <pre class="code" data-role="code"></pre>
+          <ul data-role="bullets" style="margin:0;padding-left:20px;display:grid;gap:4px;font-size:14px"></ul>
+        </div>
+      </div>
+    </article>
+
+    <article class="lesson" id="l-modelo">
+      <h3><span class="num">1.2</span>Data model viewer: revisar antes de construir</h3>
+      <div class="body">
+        <p>El visor muestra las tablas, sus asociaciones y, para cada campo, la <b>densidad</b>, el <b>ratio de subconjunto</b> y si hay <b>duplicados</b>. El libro lo usa para depurar: si un conteo da de más, revisar duplicados; si una selección no filtra bien, revisar el ratio de subconjunto de la clave.</p>
+      </div>
+      <div class="lab" id="lab-model">
+        <div class="ctrl">
+          <p class="lab-title">Probalo</p>
+          <div class="field"><span class="lbl">Escenario de la clave <code>ID_Ubicacion</code></span><div class="seg" data-role="scn"></div></div>
+          <label class="check" data-role="fixwrap"><input type="checkbox" id="model-fix"> <span>Normalizar la clave en el script</span></label>
+          <pre class="code" data-role="script"></pre>
+        </div>
+        <div class="out">
+          <p class="lab-title">Lo que mostraría el visor</p>
+          <div class="row">
+            <div class="tbl-wrap"><table class="t" data-role="tA"></table></div>
+            <div class="tbl-wrap"><table class="t" data-role="tB"></table></div>
+          </div>
+          <dl class="kv" data-role="stats"></dl>
+          <div data-role="diag"></div>
+        </div>
+      </div>
+      <p class="practice"><b>En la práctica:</b> al migrar fuentes (por ejemplo de PI a Zafiro) conviene validar el cruce con una clave robusta como UWI y mirar el ratio de subconjunto antes de dar por buena la migración.</p>
+    </article>
+
+    <article class="lesson" id="l-master">
+      <h3><span class="num">1.3</span>Master Library: una sola definición por KPI</h3>
+      <div class="body">
+        <p>Dimensiones, medidas y gráficos guardados para reutilizar. Reemplazan las expresiones guardadas en variables y los objetos vinculados de QlikView: un cambio en la medida maestra se aplica en todos los objetos que la usan. Ojo: si se borra un ítem maestro, esos objetos dejan de funcionar.</p>
+      </div>
+      <div class="lab" id="lab-master">
+        <div class="ctrl">
+          <p class="lab-title">Probalo</p>
+          <div class="field"><span class="lbl">Cómo está definida la intensidad</span><div class="seg" data-role="mode"></div></div>
+          <div class="field"><span class="lbl">Cambiar el denominador (editando el gráfico 1)</span><div class="seg" data-role="den"></div></div>
+          <pre class="code" data-role="code"></pre>
+        </div>
+        <div class="out">
+          <p class="lab-title">Tres objetos de la app</p>
+          <div class="row" data-role="tiles"></div>
+          <div data-role="diag"></div>
+        </div>
+      </div>
+    </article>
+
+    <div class="quiz" data-quiz="m1"></div>
+  </section>
+
+  <!-- ============ MÓDULO 2 ============ -->
+  <section class="module" id="m2">
+    <div class="mod-head">
+      <p class="eyebrow">Módulo 2 · Capítulo 2</p>
+      <h2>Visualizaciones: de la pregunta al gráfico</h2>
+      <p>Cómo organizar una app, cómo elegir el gráfico según la pregunta de negocio, cómo usar el color y cómo presentar resultados sin salir de Qlik.</p>
+    </div>
+
+    <article class="lesson" id="l-dar">
+      <h3><span class="num">2.1</span>Dashboard, Análisis, Reportes (DAR)</h3>
+      <div class="body">
+        <p>El libro propone ordenar cada app de lo general a lo particular. Además, cada hoja tiene que responder una pregunta y anticipar la siguiente: gráficos complementarios juntos, para que una selección los actualice a todos.</p>
+      </div>
+      <div class="lab" id="lab-dar">
+        <div class="ctrl">
+          <p class="lab-title">Probalo</p>
+          <div class="field"><span class="lbl">Elegí una hoja</span><div class="seg" data-role="sheet"></div></div>
+          <p data-role="desc" style="font-size:14px"></p>
+        </div>
+        <div class="out">
+          <p class="lab-title">Ejemplo con una app de HSE</p>
+          <div class="steps" data-role="steps"></div>
+          <div data-role="detail" style="font-size:14px"></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="lesson" id="l-pregunta">
+      <h3><span class="num">2.2</span>Primero la pregunta, después el gráfico</h3>
+      <div class="body">
+        <p>Cuatro tipos de pregunta, cada uno con los gráficos que mejor la responden: <b>comparación</b>, <b>composición</b>, <b>distribución</b> y <b>relación</b>.</p>
+      </div>
+      <div class="lab" id="lab-chart">
+        <div class="ctrl">
+          <p class="lab-title">Probalo</p>
+          <div class="field"><span class="lbl">¿Qué querés responder?</span><div class="seg" data-role="q"></div></div>
+          <div class="status info" data-role="why"></div>
+        </div>
+        <div class="out">
+          <p class="lab-title" data-role="ttl"></p>
+          <div class="chart" data-role="chart"></div>
+          <div class="legend" data-role="legend"></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="lesson" id="l-color">
+      <h3><span class="num">2.3</span>Color con intención</h3>
+      <div class="body">
+        <p>Pocos colores y cada uno con significado. El libro muestra dos técnicas: <b>colores persistentes</b>, asignados en el script para que un valor tenga siempre el mismo color aunque cambien las selecciones, y <b>ColorMix1</b>, que arma un degradé entre dos colores a partir de un valor entre 0 y 1.</p>
+      </div>
+      <div class="lab" id="lab-color">
+        <div class="ctrl">
+          <p class="lab-title">Probalo</p>
+          <label class="check"><input type="checkbox" id="color-persist" checked> <span>Usar colores persistentes (<code>Pick()</code> en el script)</span></label>
+          <label class="check"><input type="checkbox" id="color-excl"> <span>Seleccionar todo menos <b>Tyres</b></span></label>
+          <div class="field"><span class="lbl">Modo de color</span><div class="seg" data-role="mode"></div></div>
+          <pre class="code" data-role="code"></pre>
+        </div>
+        <div class="out">
+          <p class="lab-title">Ventas por producto</p>
+          <div class="chart" data-role="chart"></div>
+          <div data-role="diag"></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="lesson" id="l-story">
+      <h3><span class="num">2.4</span>Snapshots, bookmarks y stories</h3>
+      <div class="body">
+        <p>El <b>snapshot</b> es una foto estática de un objeto; el <b>bookmark</b> guarda selecciones y muestra los datos nuevos después de cada recarga. Las <b>stories</b> combinan snapshots, comentarios y hojas embebidas para presentar dentro de la app.</p>
+      </div>
+      <div class="lab" id="lab-snap">
+        <div class="ctrl">
+          <p class="lab-title">Probalo</p>
+          <p style="font-size:14px">Se guardaron un snapshot y un bookmark del KPI «Emisiones del mes» con la selección <b>Unidad = Norte</b>. Recargá la app y mirá qué cambia.</p>
+          <div class="row" style="gap:8px"><button class="btn primary" type="button" data-role="reload">Recargar datos</button><button class="btn" type="button" data-role="reset">Volver al inicio</button></div>
+          <p class="range-row" data-role="count"></p>
+        </div>
+        <div class="out">
+          <p class="lab-title">Resultado</p>
+          <div class="row" data-role="tiles"></div>
+          <div data-role="diag"></div>
+        </div>
+      </div>
+    </article>
+
+    <div class="quiz" data-quiz="m2"></div>
+  </section>
+
+  <!-- ============ MÓDULO 3 ============ -->
+  <section class="module" id="m3">
+    <div class="mod-head">
+      <p class="eyebrow">Módulo 3 · Capítulo 3</p>
+      <h2>Scripting: ordenado, reutilizable y rápido</h2>
+      <p>El capítulo con más impacto en el día a día: cómo estructurar y depurar el script, reutilizar código, aprovechar las cargas optimizadas de QVD y resolver la lógica en la recarga.</p>
+    </div>
+
+    <article class="lesson" id="l-estructura">
+      <h3><span class="num">3.1</span>Un script legible y fácil de depurar</h3>
+      <div class="body">
+        <p>Una pestaña de change log y un encabezado por sección (qué hace, quién la tocó) más un <code>TRACE</code> para seguir la recarga en el log. Para depurar, el panel <b>Debug</b> permite cargar pocos registros, poner puntos de interrupción y ver el valor de las variables.</p>
+      </div>
+      <div class="lab" id="lab-header">
+        <div class="ctrl">
+          <p class="lab-title">Generá tu encabezado</p>
+          <div class="field"><label for="hd-sec">Sección</label><input type="text" id="hd-sec" value="Calendario"></div>
+          <div class="field"><label for="hd-desc">Descripción</label><input type="text" id="hd-desc" value="Genera todas las fechas entre vMinDate y vMaxDate"></div>
+          <div class="field"><label for="hd-dev">Desarrolladores</label><input type="text" id="hd-dev" value="Equipo BI"></div>
+          <div class="field"><label for="hd-lim">Registros en Debug (carga limitada)</label><input type="number" id="hd-lim" value="10" min="1" max="1000"></div>
+        </div>
+        <div class="out">
+          <p class="lab-title">Encabezado listo para pegar</p>
+          <pre class="code" data-role="code"></pre>
+          <button class="btn copy" type="button" data-role="copy">Copiar</button>
+          <div class="status info" data-role="debug"></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="lesson" id="l-include">
+      <h3><span class="num">3.2</span>Include y Must_Include</h3>
+      <div class="body">
+        <p>Un bloque de código común se guarda en un archivo <code>.qvs</code> y se incluye en cualquier app con una línea. La diferencia está en qué pasa si el archivo no existe: <code>Must_Include</code> detiene la recarga con error; <code>Include</code> sigue sin avisar. Las subrutinas (<code>SUB … END SUB</code> + <code>CALL</code>) completan la idea dentro de un mismo script.</p>
+      </div>
+      <div class="lab" id="lab-include">
+        <div class="ctrl">
+          <p class="lab-title">Probalo</p>
+          <div class="field"><span class="lbl">Variables.qvs se incluye con…</span><div class="seg" data-role="t1"></div></div>
+          <label class="check"><input type="checkbox" id="inc-f1" checked> <span>Variables.qvs existe en la carpeta</span></label>
+          <div class="field"><span class="lbl">Colores.qvs se incluye con…</span><div class="seg" data-role="t2"></div></div>
+          <label class="check"><input type="checkbox" id="inc-f2" checked> <span>Colores.qvs existe en la carpeta</span></label>
+        </div>
+        <div class="out">
+          <p class="lab-title">Script y log de recarga</p>
+          <pre class="code" data-role="code"></pre>
+          <div class="log" data-role="log"></div>
+          <div data-role="diag"></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="lesson" id="l-optimizado">
+      <h3><span class="num">3.3</span>Carga optimizada de QVD: hasta 100× más rápida</h3>
+      <div class="body">
+        <p>En una carga optimizada los datos pasan del disco a la memoria sin descomprimirse. Según el libro puede ser hasta 100 veces más rápida. Casi cualquier transformación la desactiva; la excepción más útil es <code>WHERE Exists()</code> con un solo campo.</p>
+      </div>
+      <div class="lab" id="lab-opt">
+        <div class="ctrl">
+          <p class="lab-title">Agregá cambios a la carga</p>
+          <div data-role="opts" style="display:grid;gap:10px"></div>
+        </div>
+        <div class="out">
+          <p class="lab-title">Script y resultado</p>
+          <pre class="code" data-role="code"></pre>
+          <div data-role="diag"></div>
+          <div class="chart" data-role="chart"></div>
+        </div>
+      </div>
+      <p class="practice"><b>Regla práctica:</b> transformar en la capa STG, guardar en QVD y que las apps de presentación lean sin tocar.</p>
+    </article>
+
+    <article class="lesson" id="l-flags">
+      <h3><span class="num">3.4</span>Flags: resolver en la recarga</h3>
+      <div class="body">
+        <p>Un flag es un campo de unos y ceros calculado en el script. La lógica de negocio se evalúa una vez, en la recarga, y el gráfico solo suma o filtra: la interfaz responde más rápido.</p>
+      </div>
+      <div class="lab" id="lab-flags">
+        <div class="ctrl">
+          <p class="lab-title">Probalo</p>
+          <div class="field"><label for="flag-month">Mes de «hoy»</label><select id="flag-month"></select></div>
+          <div class="field"><span class="lbl">Dónde está la lógica</span><div class="seg" data-role="mode"></div></div>
+        </div>
+        <div class="out">
+          <p class="lab-title">Expresión y resultado</p>
+          <pre class="code" data-role="code"></pre>
+          <div class="row" data-role="tiles"></div>
+          <div data-role="diag"></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="lesson" id="l-foreach">
+      <h3><span class="num">3.5</span>For Each en lugar de comodín</h3>
+      <div class="body">
+        <p>Con un comodín (<code>*</code>) el preceding load solo se aplica al primer archivo, y el campo nuevo queda en una sola tabla: aparece una clave sintética. Con <code>For Each</code> se procesa archivo por archivo y todo se concatena en una tabla limpia.</p>
+      </div>
+      <div class="lab" id="lab-foreach">
+        <div class="ctrl">
+          <p class="lab-title">Probalo</p>
+          <div class="field"><span class="lbl">Cómo se cargan los CSV mensuales</span><div class="seg" data-role="mode"></div></div>
+          <pre class="code" data-role="code"></pre>
+        </div>
+        <div class="out">
+          <p class="lab-title">Modelo resultante</p>
+          <div data-role="tables" style="display:grid;gap:12px"></div>
+          <div data-role="diag"></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="lesson" id="l-concat">
+      <h3><span class="num">3.6</span>Concat(): varios valores en una celda</h3>
+      <div class="body">
+        <p>Concat junta los valores de un campo en un solo texto. Es una función de agregación: en el script necesita <code>GROUP BY</code> y en la interfaz se combina con <code>Aggr()</code>. El tercer parámetro define el orden.</p>
+      </div>
+      <div class="lab" id="lab-concat">
+        <div class="ctrl">
+          <p class="lab-title">Probalo</p>
+          <div class="field"><label for="cc-del">Separador</label><select id="cc-del"><option value=", ">coma y espacio</option><option value=" | ">barra vertical</option><option value="; ">punto y coma</option></select></div>
+          <label class="check"><input type="checkbox" id="cc-sort" checked> <span>Ordenar alfabéticamente (tercer parámetro)</span></label>
+          <label class="check"><input type="checkbox" id="cc-dist"> <span>Usar <code>DISTINCT</code> para no repetir valores</span></label>
+          <div class="tbl-wrap"><table class="t" data-role="src"></table></div>
+        </div>
+        <div class="out">
+          <p class="lab-title">Script y tabla resultante</p>
+          <pre class="code" data-role="code"></pre>
+          <div class="tbl-wrap"><table class="t" data-role="res"></table></div>
+        </div>
+      </div>
+    </article>
+
+    <div class="quiz" data-quiz="m3"></div>
+  </section>
+
+  <!-- ============ MÓDULO 4 ============ -->
+  <section class="module" id="m4">
+    <div class="mod-head">
+      <p class="eyebrow">Módulo 4 · Capítulo 4</p>
+      <h2>Apps e interfaz: publicar y dar contexto</h2>
+      <p>Cómo se publica una app y quién ve cada hoja, cómo mostrar un KPI que se entienda de un vistazo y cómo manejar los valores atípicos.</p>
+    </div>
+
+    <article class="lesson" id="l-publicar">
+      <h3><span class="num">4.1</span>Publicar con orden</h3>
+      <div class="body">
+        <p>Una app de Desktop se importa en la QMC y se publica en un stream. Publicar no se deshace y la app publicada no cambia su diseño: para modificarla se duplica, se edita y se usa <b>Replace existing app</b>. Las hojas y los bookmarks pueden ser <b>privados</b>, <b>aprobados</b> o <b>de comunidad</b>.</p>
+      </div>
+      <div class="lab" id="lab-pub">
+        <div class="ctrl">
+          <p class="lab-title">Probalo</p>
+          <p style="font-size:14px">Seguí el ciclo de vida de la app «MIND HSE».</p>
+          <div style="display:grid;gap:8px" data-role="actions"></div>
+          <button class="btn" type="button" data-role="reset">Volver al inicio</button>
+        </div>
+        <div class="out">
+          <p class="lab-title">Estado</p>
+          <div class="steps" data-role="steps"></div>
+          <div class="tbl-wrap"><table class="t" data-role="sheets"></table></div>
+          <div data-role="diag"></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="lesson" id="l-kpi">
+      <h3><span class="num">4.2</span>KPIs que se entienden de un vistazo</h3>
+      <div class="body">
+        <p>El objeto KPI pinta el valor según un umbral y puede mostrar real y objetivo juntos. Para imitar un <i>bullet chart</i>, el libro usa un gauge con tramos de color y líneas de referencia, con el máximo en 1,2 veces el objetivo.</p>
+      </div>
+      <div class="lab" id="lab-kpi">
+        <div class="ctrl">
+          <p class="lab-title">Probalo</p>
+          <div class="field"><label for="kpi-real">Real</label><input type="range" id="kpi-real" min="0" max="12000" step="100" value="8600"><div class="range-row"><span>0</span><span data-role="vReal"></span><span>12.000</span></div></div>
+          <div class="field"><label for="kpi-obj">Objetivo</label><input type="range" id="kpi-obj" min="2000" max="10000" step="100" value="9500"><div class="range-row"><span>2.000</span><span data-role="vObj"></span><span>10.000</span></div></div>
+          <div class="field"><label for="kpi-tol">Tolerancia para el tramo amarillo</label><input type="range" id="kpi-tol" min="0" max="20" step="1" value="10"><div class="range-row"><span>0 %</span><span data-role="vTol"></span><span>20 %</span></div></div>
+        </div>
+        <div class="out">
+          <p class="lab-title">KPI y gauge con referencia</p>
+          <div class="row" data-role="tiles"></div>
+          <div class="chart" data-role="chart"></div>
+          <pre class="code" data-role="code"></pre>
+        </div>
+      </div>
+    </article>
+
+    <article class="lesson" id="l-atipicos">
+      <h3><span class="num">4.3</span>Contexto y valores atípicos</h3>
+      <div class="body">
+        <p>Un número sin contexto dice poco. Una banda de control (promedio ± desvío estándar) muestra qué es normal. Para los atípicos hay dos caminos: excluirlos del cálculo con <code>Fractile()</code> o dejarlos y limitar el eje al segundo valor más alto.</p>
+      </div>
+      <div class="lab" id="lab-out">
+        <div class="ctrl">
+          <p class="lab-title">Probalo</p>
+          <p style="font-size:14px">Duración diaria de la recarga de una app Upstream, en minutos. El día 9 hubo un problema de red.</p>
+          <div class="field"><span class="lbl">Tratamiento</span><div class="seg" data-role="mode"></div></div>
+          <label class="check"><input type="checkbox" id="out-band" checked> <span>Mostrar banda de control</span></label>
+        </div>
+        <div class="out">
+          <p class="lab-title">Gráfico</p>
+          <div class="chart" data-role="chart"></div>
+          <dl class="kv" data-role="stats"></dl>
+          <pre class="code" data-role="code"></pre>
+        </div>
+      </div>
+      <p class="practice"><b>Otros objetos del capítulo:</b> treemap para ver cómo las partes forman el todo, mapas con <code>GeoMakePoint()</code> o archivos KML, y dispersión capaz de mostrar más de un millón de puntos.</p>
+    </article>
+
+    <div class="quiz" data-quiz="m4"></div>
+  </section>
+
+  <!-- ============ RECURSOS ============ -->
+  <section class="module" id="recursos">
+    <div class="mod-head">
+      <p class="eyebrow">Recursos</p>
+      <h2>Para seguir aprendiendo</h2>
+      <p>El contenido de este laboratorio resume y adapta los capítulos 1 a 4 del libro. Para profundizar, consultá la obra original y la ayuda oficial de Qlik.</p>
+    </div>
+    <div class="book">
+      <div class="spine" aria-hidden="true">Qlik Sense Cookbook<small>Packt · 2015</small></div>
+      <div style="display:grid;gap:10px">
+        <h3 style="font-size:22px">Qlik Sense® Cookbook</h3>
+        <p>Philip Hand y Neeraj Kharpate. Packt Publishing, 2015. Más de 80 recetas paso a paso, de la carga de datos a las extensiones.</p>
+        <dl class="kv"><dt>ISBN</dt><dd class="mono">978-1-78217-514-8</dd><dt>Edición</dt><dd>Primera (existe una segunda edición de 2018)</dd></dl>
+        <p style="font-size:14px;color:var(--muted)">El libro tiene derechos de autor: conseguilo a través de la editorial, una librería o la biblioteca de tu organización.</p>
+        <p><a href="https://help.qlik.com/" target="_blank" rel="noopener">Ayuda oficial de Qlik (help.qlik.com)</a></p>
+      </div>
+    </div>
+  </section>
+  </main>
+</div>
+<footer><div class="wrap">Laboratorio basado en los capítulos 1 a 4 de «Qlik Sense Cookbook». Los datos de los ejemplos son ficticios.</div></footer>
+
+<script>
+(function(){
+"use strict";
+const $=(s,r)=>(r||document).querySelector(s);
+const $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const fmt=n=>Number(n).toLocaleString("es-AR",{maximumFractionDigits:1});
+const store={get(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function seg(container,options,current,onPick){
+  container.innerHTML="";
+  options.forEach(o=>{const b=document.createElement("button");b.type="button";b.textContent=o.label;b.setAttribute("aria-pressed",String(o.value===current));
+    b.addEventListener("click",()=>{$$("button",container).forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");onPick(o.value)});container.appendChild(b)});
+}
+function status(kind,pill,text){return `<div class="status ${kind}"><span class="pill">${pill}</span><span>${text}</span></div>`}
+function tableHTML(cols,rows,opts){opts=opts||{};let h="<thead><tr>"+cols.map(c=>`<th class="${c.num?"num":""}">${esc(c.h)}</th>`).join("")+"</tr></thead><tbody>";
+  rows.forEach((r,i)=>{h+=`<tr class="${opts.rowClass?opts.rowClass(r,i):""}">`+cols.map(c=>`<td class="${c.num?"num":""}">${esc(r[c.k])}</td>`).join("")+"</tr>"});return h+"</tbody>"}
+
+/* ---------- SVG helpers ---------- */
+function svgWrap(w,h,inner,label){return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(label)}">${inner}</svg>`}
+function txt(x,y,s,o){o=o||{};return `<text x="${x}" y="${y}" style="fill:${o.fill||"var(--muted)"};font:${o.weight||400} ${o.size||12}px var(--f-body);font-variant-numeric:tabular-nums" text-anchor="${o.anchor||"start"}">${esc(s)}</text>`}
+function barChart(data,o){o=o||{};const W=560,H=o.h||240,L=o.left||110,R=24,T=10,B=28;const max=o.max||Math.max(...data.map(d=>d.value))*1.1;
+  const bh=(H-T-B)/data.length;let g="";const x=v=>L+(W-L-R)*Math.min(v,max)/max;
+  const ticks=o.ticks||[0,max/2,max];ticks.forEach(t=>{g+=`<line x1="${x(t)}" x2="${x(t)}" y1="${T}" y2="${H-B}" style="stroke:var(--line)"/>`+txt(x(t),H-B+18,fmt(t),{anchor:"middle"})});
+  data.forEach((d,i)=>{const y=T+i*bh+bh*.18,hh=bh*.64;
+    if(d.parts){let acc=0;d.parts.forEach(p=>{g+=`<rect x="${x(acc)}" y="${y}" width="${Math.max(0,x(acc+p.value)-x(acc))}" height="${hh}" style="fill:${p.color}" rx="2"/>`;acc+=p.value})}
+    else g+=`<rect x="${L}" y="${y}" width="${Math.max(0,x(d.value)-L)}" height="${hh}" style="fill:${d.color||"var(--accent)"}" rx="2"/>`;
+    g+=txt(L-8,y+hh/2+4,d.label,{anchor:"end",fill:"var(--ink)",size:13});
+    if(d.marker!=null)g+=`<line x1="${x(d.marker)}" x2="${x(d.marker)}" y1="${y-4}" y2="${y+hh+4}" style="stroke:var(--ink);stroke-width:3"/>`;
+    if(o.values!==false)g+=txt(x(d.total!=null?d.total:d.value)+6,y+hh/2+4,fmt(d.total!=null?d.total:d.value),{fill:"var(--ink)"});
+  });return svgWrap(W,H,g,o.label||"Gráfico de barras")}
+
+/* ---------- 1.1 Conexiones ---------- */
+(function(){const root=$("#lab-conn");const S={
+ db:{label:"Base de datos",note:"Conexión ODBC u OLE DB guardada en la biblioteca.",code:`<span class="k">LIB CONNECT TO</span> 'SQL_Produccion';\n\nPozos:\n<span class="k">LOAD</span> UWI, Nombre, Yacimiento;\n<span class="k">SQL SELECT</span> UWI, Nombre, Yacimiento\n  FROM dbo.Pozos;`,b:["LIB CONNECT TO usa la conexión por nombre: el script no guarda credenciales.","El LOAD encima del SQL SELECT es un preceding load: ahí se transforma con funciones de Qlik."]},
+ file:{label:"Carpeta (CSV/QVD)",note:"Conexión de carpeta: CSV, Excel, XML y QVD se leen igual.",code:`Emisiones:\n<span class="k">LOAD</span> Fecha, Unidad, Toneladas_CO2e\n<span class="k">FROM</span> [lib://Datos/Emisiones_2026.csv]\n(txt, utf8, embedded labels, delimiter is ';');`,b:["La ruta lib:// apunta a la conexión, no a una carpeta física: el mismo script sirve en otro servidor.","Para QVD el formato es (qvd) y, si no hay transformaciones, la carga es optimizada."]},
+ web:{label:"Web (HTML)",note:"Qlik detecta las tablas de la página y las lista en la vista previa.",code:`Cotizaciones:\n<span class="k">LOAD</span> Moneda, Fecha, Valor\n<span class="k">FROM</span> [lib://Web_Cotizaciones]\n(html, utf8, embedded labels, table is @1);`,b:["table is @1 indica la primera tabla HTML de la página.","Si el sitio pide autenticación, el libro sugiere extraer con otra herramienta y guardar en QVD."]},
+ sap:{label:"SAP (Legacy mode)",note:"En 2015 SAP requería Legacy mode y un script generado en QlikView.",code:`<span class="c">// Requiere StandardReload=0 en settings.ini (Legacy mode)</span>\n<span class="k">CUSTOM CONNECT TO</span> "Provider=QvSAPConnector.dll;...";\n\nCabeceras:\n<span class="k">SQL SELECT</span> BUKRS, BELNR, GJAHR <span class="k">FROM</span> BKPF;`,b:["Legacy mode habilita scripts de QlikView, BINARY y CUSTOM CONNECT: útil en migraciones QlikView → Qlik Sense.","Costo: se pierde el control de las conexiones desde la QMC y parte de la seguridad de la biblioteca."]}};
+ function render(k){const s=S[k];$("[data-role=code]",root).innerHTML=s.code;$("[data-role=note]",root).innerHTML=`<span class="pill">Nota</span><span>${s.note}</span>`;$("[data-role=bullets]",root).innerHTML=s.b.map(x=>`<li>${esc(x)}</li>`).join("")}
+ seg($("[data-role=src]",root),Object.keys(S).map(k=>({value:k,label:S[k].label})),"db",render);render("db")})();
+
+/* ---------- 1.2 Data model viewer ---------- */
+(function(){const root=$("#lab-model");let scn="ok";const fix=$("#model-fix");
+ const SC={ok:{label:"Clave limpia",A:["123","456","789"],B:["123","456","789","123","456"]},
+  zeros:{label:"Ceros a la izquierda",A:["000123","000456","000789"],B:["123","456","789","123","456"]},
+  dup:{label:"Duplicados",A:["123","456","456","789"],B:["123","456","789","123","456"]}};
+ function norm(v){return String(Number(v))}
+ function render(){const s=SC[scn];const doFix=fix.checked&&scn!=="ok";
+  const A=s.A.map(v=>doFix&&scn==="zeros"?norm(v):v);const Aun=doFix&&scn==="dup"?[...new Set(A)]:A;const B=s.B;
+  const setA=new Set(Aun),setB=new Set(B),all=new Set([...Aun,...B]);
+  $("[data-role=tA]",root).innerHTML=`<caption style="text-align:left;font-weight:600;padding-bottom:4px">Ubicaciones (SAP PM)</caption>`+tableHTML([{h:"ID_Ubicacion",k:"id"},{h:"Descripción",k:"d"}],Aun.map((v,i)=>({id:v,d:["Planta Norte","Batería 4","Pozo LG-12","Batería 4"][i]||"Planta Norte"})),{rowClass:r=>setB.has(r.id)?"":"miss"});
+  $("[data-role=tB]",root).innerHTML=`<caption style="text-align:left;font-weight:600;padding-bottom:4px">Avisos</caption>`+tableHTML([{h:"Aviso",k:"a"},{h:"ID_Ubicacion",k:"id"}],B.map((v,i)=>({a:"AV-"+(1001+i),id:v})),{rowClass:r=>setA.has(r.id)?"":"miss"});
+  const matched=B.filter(v=>setA.has(v)).length;const dupA=Aun.length!==setA.size;
+  const subA=Math.round(setA.size/all.size*100),subB=Math.round(setB.size/all.size*100);
+  $("[data-role=stats]",root).innerHTML=`<dt>Valores distintos de la clave (total)</dt><dd>${all.size}</dd><dt>Ratio de subconjunto · Ubicaciones</dt><dd>${subA} %</dd><dt>Ratio de subconjunto · Avisos</dt><dd>${subB} %</dd><dt>¿Duplicados en Ubicaciones?</dt><dd>${dupA?"Sí":"No"}</dd><dt>Avisos asociados a una ubicación</dt><dd>${matched} de ${B.length}</dd>`;
+  let d;if(scn==="ok")d=status("ok","Bien","Las dos tablas comparten los mismos valores: cada aviso encuentra su ubicación y no hay duplicados.");
+  else if(scn==="zeros"&&!doFix)d=status("bad","Problema","Una fuente trae la clave como texto con ceros y la otra como número: los valores no coinciden y los avisos quedan sin ubicación. La pista es el ratio de subconjunto: ninguna de las dos tablas llega al 100 %, porque cada una tiene valores que la otra no tiene.");
+  else if(scn==="zeros")d=status("ok","Corregido","Con Num() las dos tablas comparten los mismos valores y todos los avisos se asocian.");
+  else if(!doFix)d=status("warn","Cuidado",`La ubicación 456 aparece dos veces. Un Count(ID_Ubicacion) devuelve ${Aun.length} en lugar de ${setA.size}, y un JOIN duplicaría los avisos de esa ubicación.`);
+  else d=status("ok","Corregido","Con LOAD DISTINCT cada ubicación aparece una sola vez y los conteos vuelven a ser correctos.");
+  $("[data-role=diag]",root).innerHTML=d;
+  const scr=scn==="zeros"?`Ubicaciones:\n<span class="k">LOAD</span>\n  ${doFix?'<span class="hl">Num(ID_Ubicacion)</span> AS ID_Ubicacion':'ID_Ubicacion'},\n  Descripcion\n<span class="k">FROM</span> [lib://SAP/Ubicaciones.qvd] (qvd);`:scn==="dup"?`Ubicaciones:\n<span class="k">LOAD</span> ${doFix?'<span class="hl">DISTINCT</span> ':''}\n  ID_Ubicacion,\n  Descripcion\n<span class="k">FROM</span> [lib://SAP/Ubicaciones.qvd] (qvd);`:`Ubicaciones:\n<span class="k">LOAD</span>\n  ID_Ubicacion,\n  Descripcion\n<span class="k">FROM</span> [lib://SAP/Ubicaciones.qvd] (qvd);`;
+  $("[data-role=script]",root).innerHTML=scr;$("[data-role=fixwrap]",root).hidden=scn==="ok"}
+ seg($("[data-role=scn]",root),Object.keys(SC).map(k=>({value:k,label:SC[k].label})),"ok",v=>{scn=v;fix.checked=false;render()});fix.addEventListener("change",render);render()})();
+
+/* ---------- 1.3 Master Library ---------- */
+(function(){const root=$("#lab-master");let mode="local",den="Venta";const E=1840,V={Venta:23000,Produccion:9200};
+ function render(){const d1=den,d2=mode==="master"?den:"Venta",d3=mode==="master"?den:"Venta";
+  const tiles=[["Hoja Dashboard · KPI",d1],["Hoja Análisis · tendencia",d2],["Hoja Reportes · tabla",d3]];
+  $("[data-role=tiles]",root).innerHTML=tiles.map(t=>`<div class="mini"><span class="h">${t[0]}</span><span class="v">${fmt(E/V[t[1]]*1000)}</span><span class="h">t CO₂e cada 1.000 m³ de ${t[1]==="Venta"?"venta":"producción"}</span></div>`).join("");
+  const consistent=d1===d2&&d2===d3;
+  $("[data-role=diag]",root).innerHTML=consistent?status("ok","Coherente",mode==="master"?"Los tres objetos usan la medida maestra: el cambio se aplicó en todos a la vez.":"Por ahora coinciden, pero cada objeto tiene su propia copia de la fórmula. Probá cambiar el denominador."):status("bad","Inconsistente","Solo cambió el gráfico que editaste. Los otros dos siguen con la fórmula vieja y la app muestra dos números distintos para el mismo KPI.");
+  $("[data-role=code]",root).innerHTML=mode==="master"?`<span class="c">// Medida maestra «Intensidad de emisiones»</span>\nSum(Emisiones) / Sum(<span class="hl">${den}</span>) * 1000\n\n<span class="c">// En cada objeto:</span>\n[Intensidad de emisiones]`:`<span class="c">// Gráfico 1</span>\nSum(Emisiones) / Sum(<span class="hl">${den}</span>) * 1000\n<span class="c">// Gráfico 2 y 3 (copias)</span>\nSum(Emisiones) / Sum(Venta) * 1000`}
+ seg($("[data-role=mode]",root),[{value:"local",label:"Fórmula copiada en cada objeto"},{value:"master",label:"Medida maestra"}],"local",v=>{mode=v;render()});
+ seg($("[data-role=den]",root),[{value:"Venta",label:"Venta"},{value:"Produccion",label:"Producción"}],"Venta",v=>{den=v;render()});render()})();
+
+/* ---------- 2.1 DAR ---------- */
+(function(){const root=$("#lab-dar");const S=[
+ {k:"D",t:"Dashboard",d:"Las cifras clave del negocio, de un vistazo.",det:"KPIs de incidentes del mes, índice de frecuencia contra la meta y una tendencia de 12 meses. Sin filtros complejos: es la hoja de entrada."},
+ {k:"A",t:"Análisis",d:"El usuario filtra y explora por su cuenta.",det:"Incidentes por área y por tipo, con filtros de período, área y contratista. Los gráficos están juntos: seleccionar un área actualiza todos."},
+ {k:"R",t:"Reportes",d:"El detalle granular, registro por registro.",det:"Tabla con cada evento: fecha, área, descripción, gravedad y estado. Se llega desde el KPI o el análisis con las selecciones ya aplicadas."}];
+ function render(i){$("[data-role=steps]",root).innerHTML=S.map((s,j)=>`<div class="step ${j===i?"on":""}"><span class="k">${s.k}</span><strong>${s.t}</strong><span style="font-size:13px;color:var(--muted)">${s.d}</span></div>`).join("");
+  $("[data-role=detail]",root).innerHTML=`<p><b>${S[i].t}:</b> ${S[i].det}</p>`;$("[data-role=desc]",root).textContent=`Siguiente pregunta: ${["¿dónde se concentran los incidentes?","¿qué eventos explican ese número?","¿qué acción corresponde para cada evento?"][i]}`}
+ seg($("[data-role=sheet]",root),S.map((s,i)=>({value:i,label:s.t})),0,render);render(0)})();
+
+/* ---------- 2.2 Pregunta → gráfico ---------- */
+(function(){const root=$("#lab-chart");const C=["var(--c1)","var(--c2)","var(--c3)","var(--c4)"];
+ const Q={
+  cmp:{label:"Comparación",ttl:"OPEX real vs. presupuesto por segmento (M USD)",why:"<b>Barras.</b> El ojo compara largos muy bien. Para agregar el presupuesto, el libro recomienda un marcador sobre la barra en lugar de apilar.",
+   draw:()=>barChart([{label:"SEG_1",value:42,marker:38},{label:"SEG_2",value:31,marker:35},{label:"SEG_3",value:18,marker:17},{label:"SEG_4",value:12,marker:14}].map(d=>({...d,color:d.value>d.marker?"var(--c2)":"var(--c1)"})),{max:50,ticks:[0,25,50],label:"Barras de OPEX con marcador de presupuesto"}),
+   leg:[["var(--c1)","Real dentro del presupuesto"],["var(--c2)","Real sobre el presupuesto"],["var(--ink)","Marcador: presupuesto"]]},
+  comp:{label:"Composición",ttl:"Emisiones por unidad de reporte y fuente (kt CO₂e)",why:"<b>Barras apiladas</b> si son pocos períodos, <b>área apilada</b> si son muchos, <b>cascada</b> para sumas y restas, o <b>% del total</b> si importa la proporción.",
+   draw:()=>barChart([["Norte",[12,6,3]],["Sur",[8,9,2]],["Este",[5,3,4]],["Oeste",[3,2,1]]].map(r=>({label:r[0],parts:r[1].map((v,i)=>({value:v,color:C[i]})),total:r[1].reduce((a,b)=>a+b,0),value:r[1].reduce((a,b)=>a+b,0)})),{max:25,ticks:[0,10,20],label:"Barras apiladas de emisiones"}),
+   leg:[[C[0],"Combustión"],[C[1],"Venteo"],[C[2],"Fugitivas"]]},
+  dist:{label:"Distribución",ttl:"Duración de las recargas Upstream (minutos, 60 recargas)",why:"<b>Histograma.</b> Muestra la tendencia central, la forma y los atípicos. En Qlik, <code>Class()</code> agrupa los valores en intervalos.",
+   draw:()=>{const bins=[["0–5",4],["5–10",17],["10–15",22],["15–20",11],["20–25",4],["25–30",0],["30–35",2]];const W=560,H=240,L=40,B=30,T=10,bw=(W-L-16)/bins.length,max=25;let g="";
+    [0,10,20].forEach(t=>{const y=H-B-(H-B-T)*t/max;g+=`<line x1="${L}" x2="${W-16}" y1="${y}" y2="${y}" style="stroke:var(--line)"/>`+txt(L-6,y+4,t,{anchor:"end"})});
+    bins.forEach((b,i)=>{const h=(H-B-T)*b[1]/max;g+=`<rect x="${L+i*bw+2}" y="${H-B-h}" width="${bw-4}" height="${h}" style="fill:${i===6?"var(--c2)":"var(--c1)"}"/>`+txt(L+i*bw+bw/2,H-B+18,b[0],{anchor:"middle"})});return svgWrap(W,H,g,"Histograma de duración de recargas")},
+   leg:[["var(--c1)","Recargas normales"],["var(--c2)","Atípicas"]]},
+  rel:{label:"Relación",ttl:"Producción vs. emisiones por yacimiento",why:"<b>Dispersión.</b> Deja ver correlaciones, grupos y valores atípicos. El color puede agregar una dimensión jerárquica.",
+   draw:()=>{const pts=[[20,4,0],[35,7,0],[50,9,0],[60,12,0],[42,8,0],[25,9,1],[55,16,1],[70,13,0],[80,15,0],[30,5,0]];const W=560,H=240,L=44,B=34,T=10,R=16,mx=90,my=20;let g="";
+    [0,30,60,90].forEach(t=>{const x=L+(W-L-R)*t/mx;g+=`<line x1="${x}" x2="${x}" y1="${T}" y2="${H-B}" style="stroke:var(--line)"/>`+txt(x,H-B+16,t,{anchor:"middle"})});
+    [0,10,20].forEach(t=>{const y=H-B-(H-B-T)*t/my;g+=`<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" style="stroke:var(--line)"/>`+txt(L-6,y+4,t,{anchor:"end"})});
+    pts.forEach(p=>{g+=`<circle cx="${L+(W-L-R)*p[0]/mx}" cy="${H-B-(H-B-T)*p[1]/my}" r="7" style="fill:${p[2]?"var(--c2)":"var(--c1)"};fill-opacity:.85"/>`});
+    g+=txt((W+L)/2,H-4,"Producción (mil m³)",{anchor:"middle"});return svgWrap(W,H,g,"Dispersión producción contra emisiones")},
+   leg:[["var(--c1)","Yacimientos en la tendencia"],["var(--c2)","Fuera de la tendencia: revisar"]]}};
+ function render(k){const q=Q[k];$("[data-role=ttl]",root).textContent=q.ttl;$("[data-role=chart]",root).innerHTML=q.draw();$("[data-role=why]",root).innerHTML=`<span class="pill">Por qué</span><span>${q.why}</span>`;
+  $("[data-role=legend]",root).innerHTML=q.leg.map(l=>`<span><i style="background:${l[0]}"></i>${esc(l[1])}</span>`).join("")}
+ seg($("[data-role=q]",root),Object.keys(Q).map(k=>({value:k,label:Q[k].label})),"cmp",render);render("cmp")})();
+
+/* ---------- 2.3 Color ---------- */
+(function(){const root=$("#lab-color");let mode="cat";const P=["Footwear","Tyres","Mountain Bikes","Road Bikes"],V={Footwear:120000,Tyres:150000,"Mountain Bikes":195000,"Road Bikes":225000};
+ const PAL=["var(--c1)","var(--c2)","var(--c3)","var(--c4)"];
+ function mix(t){const a=[255,255,255],b=[0,70,140];return `rgb(${a.map((x,i)=>Math.round(x+(b[i]-x)*t)).join(",")})`}
+ function render(){const persist=$("#color-persist").checked,excl=$("#color-excl").checked;const items=P.filter(p=>!(excl&&p==="Tyres"));const max=Math.max(...items.map(p=>V[p]));
+  const data=items.map((p,i)=>({label:p,value:V[p]/1000,color:mode==="mix"?mix(V[p]/max):(persist?PAL[P.indexOf(p)]:PAL[i])}));
+  $("[data-role=chart]",root).innerHTML=barChart(data,{max:250,ticks:[0,125,250],left:130,label:"Ventas por producto en miles"});
+  $("#color-persist").closest("label").style.opacity=mode==="mix"?.5:1;$("#color-persist").disabled=mode==="mix";
+  let d;if(mode==="mix")d=status("info","ColorMix1",`Cada barra toma su intensidad de Ventas / Máximo: la más alta es azul pleno y las demás se aclaran. ${excl?"Al excluir Tyres, el máximo no cambia y los tonos se mantienen.":""}`);
+  else if(persist)d=status("ok","Estable",excl?"Tyres salió de la selección, pero cada producto conserva su color: el usuario lo sigue reconociendo.":"Cada producto tiene su color fijo. Probá seleccionar todo menos Tyres.");
+  else d=status(excl?"bad":"warn",excl?"Confuso":"Por orden",excl?"Sin colores persistentes, los colores se reasignan por posición: Mountain Bikes y Road Bikes cambiaron de color al quitar Tyres.":"Los colores dependen del orden de los valores. Probá seleccionar todo menos Tyres.");
+  $("[data-role=diag]",root).innerHTML=d;
+  $("[data-role=code]",root).innerHTML=mode==="mix"?`<span class="c">// Expresión de color del gráfico</span>\n<span class="k">ColorMix1</span>(\n  Sum(Ventas) / Max(<span class="k">TOTAL</span> Aggr(Sum(Ventas), Producto)),\n  RGB(255,255,255),\n  RGB(0,70,140)\n)`:persist?`<span class="c">// Script</span>\n<span class="k">LOAD</span> Producto,\n  <span class="hl">Pick(Match(Producto,\n    'Footwear','Tyres','Mountain Bikes','Road Bikes'),\n    RGB(47,111,176), RGB(208,122,43),\n    RGB(62,155,106), RGB(138,91,181))</span>\n    AS [Color Producto]\n...\n<span class="c">// Color del gráfico: =[Color Producto]</span>`:`<span class="c">// Color del gráfico: automático por dimensión.\n// Qlik asigna colores según el orden de los valores.</span>`}
+ seg($("[data-role=mode]",root),[{value:"cat",label:"Por producto"},{value:"mix",label:"Degradé con ColorMix1"}],"cat",v=>{mode=v;render()});
+ $("#color-persist").addEventListener("change",render);$("#color-excl").addEventListener("change",render);render()})();
+
+/* ---------- 2.4 Snapshot vs bookmark ---------- */
+(function(){const root=$("#lab-snap");const base=[412,398,431,455,440];let n=0;
+ function render(){const cur=base[n%base.length];
+  $("[data-role=tiles]",root).innerHTML=`<div class="mini"><span class="h">Snapshot (guardado en la recarga 1)</span><span class="v">${fmt(base[0])} t</span><span class="h">Foto estática: no cambia</span></div><div class="mini"><span class="h">Bookmark «Unidad = Norte»</span><span class="v">${fmt(cur)} t</span><span class="h">Reaplica la selección sobre los datos actuales</span></div>`;
+  $("[data-role=count]",root).textContent=`Recargas realizadas: ${n+1}`;
+  $("[data-role=diag]",root).innerHTML=n===0?status("info","Inicio","Los dos muestran lo mismo porque todavía no hubo recargas nuevas."):status("info","Diferencia",`El snapshot sigue mostrando ${fmt(base[0])} t; el bookmark ya muestra ${fmt(cur)} t. Usá snapshots para contar una historia de un momento dado y bookmarks para volver a una vista.`)}
+ $("[data-role=reload]",root).addEventListener("click",()=>{n++;render()});$("[data-role=reset]",root).addEventListener("click",()=>{n=0;render()});render()})();
+
+/* ---------- 3.1 Encabezado ---------- */
+(function(){const root=$("#lab-header");const ids=["hd-sec","hd-desc","hd-dev","hd-lim"];let plain="";
+ function render(){const s=$("#hd-sec").value.trim()||"Sección",d=$("#hd-desc").value.trim()||"…",v=$("#hd-dev").value.trim()||"…",lim=Math.max(1,parseInt($("#hd-lim").value,10)||10);
+  const today=new Date().toLocaleDateString("es-AR");
+  plain=`/*===========================================================\nSection: ${s};\nDESCRIPTION: ${d};\nDEVELOPERS: ${v};\nLAST CHANGE: ${today}\n===========================================================*/\nTRACE ~~~~ Cargando ${s} ~~~~;`;
+  $("[data-role=code]",root).innerHTML=`<span class="c">${esc(plain.split("\n").slice(0,6).join("\n"))}</span>\n<span class="k">TRACE</span> ~~~~ Cargando ${esc(s)} ~~~~;`;
+  $("[data-role=debug]",root).innerHTML=`<span class="pill">Debug</span><span>Con «Carga limitada» en ${lim} registro${lim===1?"":"s"}, cada LOAD trae como máximo ${lim} filas: sirve para validar la lógica rápido, aunque las tablas puedan no asociarse. El TRACE aparece en el log con el nombre de la sección.</span>`}
+ ids.forEach(i=>$("#"+i).addEventListener("input",render));
+ $("[data-role=copy]",root).addEventListener("click",e=>{const b=e.currentTarget;const done=()=>{b.textContent="Copiado";setTimeout(()=>b.textContent="Copiar",1500)};
+  try{navigator.clipboard.writeText(plain).then(done,()=>sel())}catch(err){sel()}
+  function sel(){const r=document.createRange();r.selectNodeContents($("[data-role=code]",root));const s=window.getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Texto seleccionado"}});render()})();
+
+/* ---------- 3.2 Include ---------- */
+(function(){const root=$("#lab-include");let t1="Must_Include",t2="Include";
+ function render(){const f1=$("#inc-f1").checked,f2=$("#inc-f2").checked;const L=[];let stop=false;
+  L.push(`<span class="o">Inicio de la recarga</span>`);
+  [[t1,f1,"Variables.qvs","12 variables definidas"],[t2,f2,"Colores.qvs","8 variables de color definidas"]].forEach(x=>{if(stop)return;
+   if(x[1])L.push(`$(${x[0]}=lib://Scripts/${x[2]}) <span class="o">→ OK, ${x[3]}</span>`);
+   else if(x[0]==="Must_Include"){L.push(`$(${x[0]}=lib://Scripts/${x[2]}) <span class="e">→ ERROR: no se encontró el archivo</span>`);L.push(`<span class="e">La recarga se detuvo. Los datos anteriores se conservan.</span>`);stop=true}
+   else L.push(`$(${x[0]}=lib://Scripts/${x[2]}) <span class="w">→ archivo no encontrado, se continúa sin aviso</span>`)});
+  if(!stop){L.push(`Emisiones: 48.210 filas`);L.push(`<span class="o">Recarga finalizada</span>`)}
+  $("[data-role=log]",root).innerHTML=L.join("\n");
+  $("[data-role=code]",root).innerHTML=`<span class="c">// Variables necesarias</span>\n$(<span class="hl">${t1}</span>=lib://Scripts/Variables.qvs);\n\n<span class="c">// Configuraciones opcionales</span>\n$(<span class="hl">${t2}</span>=lib://Scripts/Colores.qvs);`;
+  let d;const silent=(!f1&&t1==="Include")||(!f2&&t2==="Include");
+  if(stop)d=status("bad","Detenida","Must_Include frenó la recarga porque falta un archivo. Es lo que se quiere para lo imprescindible: mejor un error claro que datos calculados sin variables.");
+  else if(!f1&&t1==="Include")d=status("bad","Riesgo","Faltan las variables pero la recarga terminó «bien». Las expresiones que usan esas variables van a fallar o mostrar valores vacíos sin que nadie se entere. Para Variables.qvs conviene Must_Include.");
+  else if(silent)d=status("warn","Aceptable","Faltan los colores, pero la app funciona con los colores por defecto. Para algo opcional, Include es la elección correcta.");
+  else d=status("ok","OK","Los dos archivos existen. Probá desmarcar uno para ver la diferencia entre Include y Must_Include.");
+  $("[data-role=diag]",root).innerHTML=d}
+ seg($("[data-role=t1]",root),[{value:"Must_Include",label:"Must_Include"},{value:"Include",label:"Include"}],t1,v=>{t1=v;render()});
+ seg($("[data-role=t2]",root),[{value:"Must_Include",label:"Must_Include"},{value:"Include",label:"Include"}],t2,v=>{t2=v;render()});
+ $("#inc-f1").addEventListener("change",render);$("#inc-f2").addEventListener("change",render);render()})();
+
+/* ---------- 3.3 Carga optimizada ---------- */
+(function(){const root=$("#lab-opt");const O=[
+ {id:"fields",label:"Cargar solo algunos campos",breaks:false,line:null,why:"Elegir menos campos no desoptimiza."},
+ {id:"rename",label:"Renombrar un campo (AS)",breaks:false,line:"rename",why:"Renombrar con AS mantiene la carga optimizada."},
+ {id:"calc",label:"Agregar un campo calculado",breaks:true,line:"'Ejemplo' AS NuevoCampo",why:"Un campo calculado obliga a descomprimir cada fila."},
+ {id:"where",label:"Filtrar con WHERE Año >= 2024",breaks:true,line:"where",why:"Un WHERE con una condición desoptimiza la carga."},
+ {id:"exists",label:"Filtrar con WHERE Exists(UWI)",breaks:false,line:"exists",why:"WHERE Exists() con un solo campo es la excepción: mantiene la carga optimizada."},
+ {id:"exists2",label:"Filtrar con WHERE Exists(UWI, Pozo)",breaks:true,line:"exists2",why:"Exists() con dos parámetros ya no es optimizado."}];
+ const box=$("[data-role=opts]",root);box.innerHTML=O.map(o=>`<label class="check"><input type="checkbox" id="opt-${o.id}"> <span>${esc(o.label)}</span></label>`).join("");
+ function render(){const on=O.filter(o=>$("#opt-"+o.id).checked);const broken=on.filter(o=>o.breaks);
+  const fl=on.some(o=>o.id==="fields")?["UWI","Fecha","Produccion"]:["UWI","Fecha","Produccion","Yacimiento","Estado","Operador"];
+  const lines=fl.map(f=>"  "+(f==="Yacimiento"&&on.some(o=>o.id==="rename")?'<span class="hl">Yacimiento AS Area</span>':f));
+  if(on.some(o=>o.id==="calc"))lines.push(`  <span class="hl">'Ejemplo' AS NuevoCampo</span>`);
+  if(on.some(o=>o.id==="rename")&&!fl.includes("Yacimiento"))lines[0]=`  <span class="hl">UWI AS ID_Pozo</span>`;
+  let where="";const w=[];if(on.some(o=>o.id==="where"))w.push("Año >= 2024");if(on.some(o=>o.id==="exists"))w.push("Exists(UWI)");if(on.some(o=>o.id==="exists2"))w.push("Exists(UWI, Pozo)");
+  if(w.length)where=`\n<span class="k">WHERE</span> <span class="hl">${w.join(" AND ")}</span>`;
+  $("[data-role=code]",root).innerHTML=`Produccion:\n<span class="k">LOAD</span>\n${lines.join(",\n")}\n<span class="k">FROM</span> [lib://QVD/Produccion.qvd] (qvd)${where};`;
+  const ok=broken.length===0;
+  $("[data-role=diag]",root).innerHTML=(ok?status("ok","Optimizada","El log de recarga indica «(qvd optimized)». "+(on.length?on.map(o=>o.why).join(" "):"Sin transformaciones: el caso ideal.")):status("bad","No optimizada",broken.map(o=>o.why).join(" ")))+(w.length>1&&w.includes("Exists(UWI)")&&ok===false?status("info","Nota","Exists(UWI) solo mantiene la optimización si es la única condición del WHERE."):"");
+  const W=560,H=110,L=130,R=20;const full=W-L-R;const vals=[["Optimizada",1],["No optimizada",ok?null:1]];let g="";
+  g+=txt(L-8,34,"Esta carga",{anchor:"end",fill:"var(--ink)",size:13});g+=`<rect x="${L}" y="20" width="${ok?full*0.05:full}" height="22" rx="2" style="fill:${ok?"var(--ok)":"var(--bad)"}"/>`+txt(L+(ok?full*0.05:full)-(ok?-6:6),36,ok?"1×":"hasta 100×",{anchor:ok?"start":"end",fill:ok?"var(--ink)":"var(--surface)",weight:600});
+  g+=txt(L-8,82,"Referencia",{anchor:"end",fill:"var(--muted)",size:13});g+=`<rect x="${L}" y="68" width="${ok?full:full*0.05}" height="22" rx="2" style="fill:var(--line)"/>`+txt(L+(ok?full:full*0.05)+(ok?-6:6),84,ok?"no optimizada: hasta 100×":"optimizada: 1×",{anchor:ok?"end":"start"});
+  $("[data-role=chart]",root).innerHTML=svgWrap(W,H,g,"Tiempo relativo de carga")+`<p style="font-size:13px;color:var(--muted)">Tiempo relativo según el libro (hasta 100 veces de diferencia). El valor real depende del volumen y del hardware.</p>`}
+ O.forEach(o=>$("#opt-"+o.id).addEventListener("change",render));render()})();
+
+/* ---------- 3.4 Flags ---------- */
+(function(){const root=$("#lab-flags");let mode="expr";const M=["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+ const rows=[];for(let m=0;m<12;m++)for(let d=0;d<30;d++)rows.push({m,v:400+((m*37+d*53)%300)});
+ const sel=$("#flag-month");sel.innerHTML=M.map((m,i)=>`<option value="${i}" ${i===9?"selected":""}>${m} 2026</option>`).join("");
+ function render(){const mi=+sel.value;const total=rows.filter(r=>r.m===mi).reduce((a,r)=>a+r.v,0);
+  $("[data-role=code]",root).innerHTML=mode==="expr"?`<span class="c">// En el gráfico (se evalúa en cada clic)</span>\nSum(<span class="hl">If(InMonth(Fecha, Today(), 0), Ventas)</span>)`:`<span class="c">// En el script (se evalúa una vez por recarga)</span>\n<span class="k">If</span>(InMonth(Fecha, Today(), 0), 1, 0) <span class="k">AS</span> Flag_MesActual\n\n<span class="c">// En el gráfico</span>\nSum(<span class="hl">Ventas * Flag_MesActual</span>)`;
+  $("[data-role=tiles]",root).innerHTML=`<div class="mini"><span class="h">Ventas de ${M[mi]} 2026</span><span class="v">${fmt(total)}</span></div><div class="mini"><span class="h">Condiciones If() evaluadas por cada clic</span><span class="v">${mode==="expr"?fmt(rows.length):"0"}</span></div>`;
+  $("[data-role=diag]",root).innerHTML=mode==="expr"?status("warn","Más lento","El resultado es correcto, pero cada selección vuelve a evaluar el If() fila por fila. Con millones de filas, se nota."):status("ok","Más rápido","Mismo resultado. La condición ya se resolvió en la recarga: el gráfico solo multiplica y suma.")}
+ seg($("[data-role=mode]",root),[{value:"expr",label:"En la expresión"},{value:"flag",label:"Flag en el script"}],"expr",v=>{mode=v;render()});sel.addEventListener("change",render);render()})();
+
+/* ---------- 3.5 For Each ---------- */
+(function(){const root=$("#lab-foreach");let mode="wild";const F=["Ventas_Ene.csv","Ventas_Feb.csv","Ventas_Mar.csv"];
+ function tbl(name,cols,rows,warn){return `<div><p style="font-weight:600;font-size:14px;margin-bottom:4px">${esc(name)} ${warn?'<span style="color:var(--bad);font-weight:600">· clave sintética</span>':""}</p><div class="tbl-wrap"><table class="t">${tableHTML(cols.map(c=>({h:c,k:c})),rows)}</table></div></div>`}
+ function render(){const sample=f=>({Archivo:f,Producto:"Footwear",Ventas:1200});
+  if(mode==="wild"){$("[data-role=code]",root).innerHTML=`Ventas:\n<span class="k">LOAD</span> *,\n  <span class="hl">Mid(FileName(), 8, 3) AS Mes</span>;\n<span class="k">LOAD</span> Producto, Ventas\n<span class="k">FROM</span> [lib://Datos/<span class="hl">Ventas_*.csv</span>] (txt);`;
+   $("[data-role=tables]",root).innerHTML=tbl("Ventas",["Archivo","Producto","Ventas","Mes"],[{...sample(F[0]),Mes:"Ene"}],true)+tbl("Ventas-1",["Archivo","Producto","Ventas"],[sample(F[1]),sample(F[2])],true)+`<p style="font-size:13px;color:var(--muted)">$Syn 1 = Producto + Ventas</p>`;
+   $("[data-role=diag]",root).innerHTML=status("bad","Problema","El preceding load solo se aplicó al primer archivo. Las tablas quedaron con campos distintos, no se concatenaron y Qlik creó una clave sintética.")}
+  else{$("[data-role=code]",root).innerHTML=`<span class="k">FOR EACH</span> vArchivo <span class="k">IN</span> FileList('lib://Datos/Ventas_*.csv')\n  Ventas:\n  <span class="k">LOAD</span> *,\n    <span class="hl">Mid(FileName(), 8, 3) AS Mes</span>;\n  <span class="k">LOAD</span> Producto, Ventas\n  <span class="k">FROM</span> [$(vArchivo)] (txt);\n<span class="k">NEXT</span> vArchivo`;
+   $("[data-role=tables]",root).innerHTML=tbl("Ventas",["Archivo","Producto","Ventas","Mes"],F.map(f=>({...sample(f),Mes:f.slice(7,10)})),false);
+   $("[data-role=diag]",root).innerHTML=status("ok","Limpio","Cada archivo pasa por el preceding load. Las tres cargas tienen los mismos campos y se concatenan solas en una tabla.")}}
+ seg($("[data-role=mode]",root),[{value:"wild",label:"Comodín *"},{value:"each",label:"For Each"}],"wild",v=>{mode=v;render()});render()})();
+
+/* ---------- 3.6 Concat ---------- */
+(function(){const root=$("#lab-concat");const L=[{Orden:"OC-501",Producto:"Válvula"},{Orden:"OC-501",Producto:"Brida"},{Orden:"OC-501",Producto:"Brida"},{Orden:"OC-502",Producto:"Sensor"},{Orden:"OC-502",Producto:"Cable"},{Orden:"OC-503",Producto:"Junta"}];
+ $("[data-role=src]",root).innerHTML=tableHTML([{h:"Orden",k:"Orden"},{h:"Producto",k:"Producto"}],L);
+ function render(){const del=$("#cc-del").value,sort=$("#cc-sort").checked,dist=$("#cc-dist").checked;const g={};
+  L.forEach(r=>{(g[r.Orden]=g[r.Orden]||[]).push(r.Producto)});
+  const res=Object.keys(g).map(k=>{let v=g[k].slice();if(dist)v=[...new Set(v)];if(sort)v.sort((a,b)=>a.localeCompare(b,"es"));return{Orden:k,Productos:v.join(del)}});
+  $("[data-role=res]",root).innerHTML=tableHTML([{h:"Orden",k:"Orden"},{h:"Productos",k:"Productos"}],res);
+  $("[data-role=code]",root).innerHTML=`Ordenes:\n<span class="k">LOAD</span> Orden,\n  <span class="hl">Concat(${dist?"DISTINCT ":""}Producto, '${esc(del)}'${sort?", Producto":""})</span> AS Productos\n<span class="k">RESIDENT</span> LineasOrden\n<span class="k">GROUP BY</span> Orden;`}
+ ["cc-del","cc-sort","cc-dist"].forEach(i=>$("#"+i).addEventListener("change",render));render()})();
+
+/* ---------- 4.1 Publicación ---------- */
+(function(){const root=$("#lab-pub");let st;
+ function init(){st={stage:0,sheets:[{n:"Dashboard",t:"Privada",by:"Autor"},{n:"Análisis por área",t:"Privada",by:"Autor"}],msg:status("info","Inicio","La app está en Qlik Sense Desktop. Elegí el primer paso.")}}
+ const A=[
+  {id:"import",label:"Importar en la QMC",ok:s=>s.stage===0,run:s=>{s.stage=1;s.msg=status("ok","Hecho","La app ya está en el servidor, pero todavía no la ve nadie más.")}},
+  {id:"publish",label:"Publicar en el stream «HSE»",ok:s=>s.stage===1,run:s=>{s.stage=2;s.sheets.forEach(x=>x.t="Aprobada");s.msg=status("ok","Publicada","Las hojas del autor pasan a ser aprobadas: los usuarios las ven en solo lectura.")}},
+  {id:"user",label:"Un usuario crea y publica su hoja",ok:s=>s.stage>=2&&!s.sheets.some(x=>x.t==="Comunidad"),run:s=>{s.sheets.push({n:"Mi vista contratistas",t:"Comunidad",by:"Usuario"});s.msg=status("ok","Comunidad","La hoja del usuario queda visible para otros como hoja de comunidad.")}},
+  {id:"edit",label:"Editar el diseño de la app publicada",ok:s=>s.stage>=2,run:s=>{s.msg=status("bad","No se puede","Una app publicada no cambia su diseño. Duplicala, editá la copia y usá «Replace existing app».")}},
+  {id:"unpub",label:"Despublicar la app",ok:s=>s.stage>=2,run:s=>{s.msg=status("bad","No se puede","Publicar no se deshace. La única forma de sacarla del stream es borrarla; por eso conviene trabajar sobre un duplicado.")}},
+  {id:"replace",label:"Duplicar, editar y «Replace existing app»",ok:s=>s.stage>=2,run:s=>{s.stage=3;s.msg=status("ok","Actualizada","La app publicada se reemplazó con la versión nueva, en el mismo stream y sin perder el acceso de los usuarios.")}}];
+ function render(){const box=$("[data-role=actions]",root);box.innerHTML="";A.forEach(a=>{const b=document.createElement("button");b.type="button";b.className="btn";b.textContent=a.label;b.disabled=!a.ok(st);b.style.opacity=b.disabled?.45:1;b.addEventListener("click",()=>{a.run(st);render()});box.appendChild(b)});
+  const S=["Desktop","Servidor (QMC)","Publicada en stream"];$("[data-role=steps]",root).innerHTML=S.map((s,i)=>`<div class="step ${Math.min(st.stage,2)===i?"on":""}"><span class="k">${i+1}</span><strong>${s}</strong></div>`).join("");
+  $("[data-role=sheets]",root).innerHTML=tableHTML([{h:"Hoja",k:"n"},{h:"Tipo",k:"t"},{h:"Creada por",k:"by"}],st.sheets);$("[data-role=diag]",root).innerHTML=st.msg}
+ $("[data-role=reset]",root).addEventListener("click",()=>{init();render()});init();render()})();
+
+/* ---------- 4.2 KPI ---------- */
+(function(){const root=$("#lab-kpi");
+ function render(){const r=+$("#kpi-real").value,o=+$("#kpi-obj").value,tol=+$("#kpi-tol").value/100;const pct=(r-o)/o;
+  $("[data-role=vReal]",root).textContent=fmt(r);$("[data-role=vObj]",root).textContent=fmt(o);$("[data-role=vTol]",root).textContent=Math.round(tol*100)+" %";
+  const lvl=r>=o?"ok":r>=o*(1-tol)?"warn":"bad";const col={ok:"var(--ok)",warn:"var(--warn)",bad:"var(--bad)"}[lvl];const word={ok:"En meta",warn:"Cerca de la meta",bad:"Debajo de la meta"}[lvl];
+  $("[data-role=tiles]",root).innerHTML=`<div class="mini"><span class="h">Real vs. objetivo</span><span class="v" style="color:${col}">${pct>=0?"+":""}${fmt(pct*100)} %</span><span class="h">${word}</span></div><div class="mini"><span class="h">Real · Objetivo</span><span class="v">${fmt(r)}</span><span class="h">objetivo ${fmt(o)}</span></div>`;
+  const W=560,H=96,L=16,R=16,max=o*1.2,x=v=>L+(W-L-R)*Math.min(v,max)/max;let g="";
+  g+=`<rect x="${x(0)}" y="24" width="${x(o*(1-tol))-x(0)}" height="34" style="fill:var(--bad-soft)"/>`;
+  g+=`<rect x="${x(o*(1-tol))}" y="24" width="${x(o)-x(o*(1-tol))}" height="34" style="fill:var(--warn-soft)"/>`;
+  g+=`<rect x="${x(o)}" y="24" width="${x(max)-x(o)}" height="34" style="fill:var(--ok-soft)"/>`;
+  g+=`<rect x="${x(0)}" y="35" width="${x(r)-x(0)}" height="12" style="fill:var(--ink)"/>`;
+  g+=`<line x1="${x(o)}" x2="${x(o)}" y1="16" y2="66" style="stroke:var(--accent);stroke-width:3"/>`+txt(x(o),12,"Objetivo",{anchor:"middle",fill:"var(--accent)",weight:600});
+  g+=txt(x(0),84,"0")+txt(x(max),84,fmt(max)+" (1,2 × objetivo)",{anchor:"end"});
+  if(r>max)g+=txt(x(max)-4,30,"▶ supera el máximo",{anchor:"end",fill:"var(--ink)",size:11});
+  $("[data-role=chart]",root).innerHTML=svgWrap(W,H,g,"Gauge lineal con tramos y línea de objetivo");
+  $("[data-role=code]",root).innerHTML=`<span class="c">// Medida del KPI</span>\n(Sum(Real) - Sum(Objetivo)) / Sum(Objetivo)\n\n<span class="c">// Gauge: máximo del rango</span>\nSum(Objetivo) * 1.2\n<span class="c">// Tramos: 0 · ${fmt(1-tol)} × objetivo · objetivo · máximo</span>`}
+ ["kpi-real","kpi-obj","kpi-tol"].forEach(i=>$("#"+i).addEventListener("input",render));render()})();
+
+/* ---------- 4.3 Atípicos ---------- */
+(function(){const root=$("#lab-out");let mode="none";const D=[12,14,11,13,15,12,14,13,58,12,16,13,11,14];
+ function stats(a){const m=a.reduce((x,y)=>x+y,0)/a.length;const sd=Math.sqrt(a.reduce((x,y)=>x+(y-m)**2,0)/(a.length-1));return{m,sd}}
+ function fractile(a,p){const s=a.slice().sort((x,y)=>x-y);const i=(s.length-1)*p,lo=Math.floor(i),hi=Math.ceil(i);return s[lo]+(s[hi]-s[lo])*(i-lo)}
+ function render(){const band=$("#out-band").checked;const lo=fractile(D,.1),hi=fractile(D,.9);
+  const used=mode==="fractile"?D.filter(v=>v>lo&&v<hi):D;const st=stats(used);const sorted=D.slice().sort((a,b)=>b-a);
+  const ymax=mode==="axis"?Math.ceil(sorted[1]*1.15):(mode==="fractile"?Math.ceil(sorted[1]*1.15):65);
+  const W=560,H=250,L=40,R=16,T=14,B=30;const x=i=>L+(W-L-R)*i/(D.length-1),y=v=>H-B-(H-B-T)*Math.min(v,ymax)/ymax;let g="";
+  const ticks=ymax>40?[0,20,40,60]:[0,5,10,15];ticks.filter(t=>t<=ymax).forEach(t=>{g+=`<line x1="${L}" x2="${W-R}" y1="${y(t)}" y2="${y(t)}" style="stroke:var(--line)"/>`+txt(L-6,y(t)+4,t,{anchor:"end"})});
+  if(band){const a=Math.max(0,st.m-st.sd),b=st.m+st.sd;g+=`<rect x="${L}" y="${y(b)}" width="${W-L-R}" height="${Math.max(0,y(a)-y(b))}" style="fill:var(--accent-soft)"/>`;
+   g+=`<line x1="${L}" x2="${W-R}" y1="${y(st.m)}" y2="${y(st.m)}" style="stroke:var(--accent);stroke-width:2;stroke-dasharray:6 4"/>`+txt(W-R,y(st.m)-6,"Promedio "+fmt(st.m),{anchor:"end",fill:"var(--accent)",weight:600})}
+  let path="";D.forEach((v,i)=>{if(mode==="fractile"&&!(v>lo&&v<hi)&&v===sorted[0])return;path+=(path?"L":"M")+x(i)+" "+y(v)});
+  g+=`<path d="${path}" style="fill:none;stroke:var(--ink);stroke-width:2"/>`;
+  D.forEach((v,i)=>{const outB=band&&(v>st.m+st.sd||v<st.m-st.sd);const hidden=mode==="fractile"&&v===sorted[0];if(hidden)return;
+   g+=`<circle cx="${x(i)}" cy="${y(v)}" r="${outB?6:4}" style="fill:${outB?"var(--bad)":"var(--ink)"}"/>`;
+   if(v>ymax)g+=txt(x(i),T+10,"↑ "+v+" min",{anchor:"middle",fill:"var(--bad)",weight:600})});
+  D.forEach((v,i)=>{if(i%2===0)g+=txt(x(i),H-B+18,"D"+(i+1),{anchor:"middle"})});
+  $("[data-role=chart]",root).innerHTML=svgWrap(W,H,g,"Duración diaria de recarga con banda de control");
+  $("[data-role=stats]",root).innerHTML=`<dt>Promedio</dt><dd>${fmt(st.m)} min</dd><dt>Desvío estándar</dt><dd>${fmt(st.sd)} min</dd><dt>Banda normal</dt><dd>${fmt(Math.max(0,st.m-st.sd))} a ${fmt(st.m+st.sd)} min</dd><dt>Valores usados</dt><dd>${used.length} de ${D.length}</dd>`;
+  $("[data-role=code]",root).innerHTML=mode==="none"?`<span class="c">// Líneas de referencia</span>\nAvg(Aggr(Sum(Minutos), Dia))\nAvg(Aggr(Sum(Minutos), Dia)) <span class="k">+</span> Stdev(Aggr(Sum(Minutos), Dia))\nAvg(Aggr(Sum(Minutos), Dia)) <span class="k">-</span> Stdev(Aggr(Sum(Minutos), Dia))`:mode==="fractile"?`<span class="c">// Promedio sin el 10 % superior e inferior</span>\nAvg(Aggr(\n  If(Sum(Minutos) > <span class="hl">Fractile(TOTAL Aggr(Sum(Minutos), Dia), 0.1)</span>\n   and Sum(Minutos) < <span class="hl">Fractile(TOTAL Aggr(Sum(Minutos), Dia), 0.9)</span>,\n   Sum(Minutos)), Dia))`:`<span class="c">// Propiedades › Eje Y › Máximo personalizado</span>\n=Max(Aggr(Sum(Minutos), Dia), <span class="hl">2</span>) * 1.15\n<span class="c">// Max(…, 2) devuelve el segundo valor más alto</span>`}
+ seg($("[data-role=mode]",root),[{value:"none",label:"Sin tratar"},{value:"fractile",label:"Excluir con Fractile()"},{value:"axis",label:"Limitar el eje"}],"none",v=>{mode=v;render()});$("#out-band").addEventListener("change",render);render()})();
+
+/* ---------- Cuestionarios ---------- */
+const QUIZ={
+ m1:{t:"Cuestionario · Datos",q:[
+  {p:"¿Qué hace LIB CONNECT TO en el script?",o:["Crea una conexión nueva con usuario y contraseña escritos en el script","Usa una conexión guardada en la biblioteca para conectarse a la fuente","Carga un QVD de forma optimizada"],a:1,e:"Funciona como puente entre la app y la fuente usando una conexión guardada; el script no lleva credenciales."},
+  {p:"¿Cuál es el costo de activar el Legacy mode según el libro?",o:["La recarga es más lenta","No se pueden usar QVD","Se pierde el control de las conexiones desde la QMC"],a:2,e:"Habilita CUSTOM CONNECT, BINARY y scripts de QlikView, pero se pierde control y seguridad sobre las conexiones."},
+  {p:"Un Count() sobre una clave da más de lo esperado. ¿Qué revisás primero en el Data model viewer?",o:["Si hay duplicados en la clave","El color de las tablas","El orden de las pestañas del script"],a:0,e:"El visor indica si un campo tiene duplicados: es la causa típica de conteos inflados."},
+  {p:"¿Qué pasa si se borra una medida maestra que usan varios gráficos?",o:["Los gráficos conservan una copia de la fórmula","Los gráficos que la usan dejan de funcionar hasta reemplazarla","Qlik la restaura en la próxima recarga"],a:1,e:"Los objetos referencian la medida maestra; sin ella, quedan sin definición."}]},
+ m2:{t:"Cuestionario · Visualizaciones",q:[
+  {p:"¿En qué orden propone el método DAR las hojas de una app?",o:["Reportes → Análisis → Dashboard","Dashboard → Análisis → Reportes","Análisis → Dashboard → Reportes"],a:1,e:"De lo general a lo particular: cifras clave, exploración y luego el detalle."},
+  {p:"Para mostrar real vs. presupuesto, el libro recomienda…",o:["Un velocímetro (dial gauge)","Un gráfico de torta","Un gráfico de barras"],a:2,e:"Las barras permiten comparar largos y ver rápido si se está por encima o por debajo."},
+  {p:"Querés ver la composición de las emisiones en 36 meses. ¿Qué gráfico conviene?",o:["Área apilada","Dispersión","Histograma"],a:0,e:"Con muchos períodos, el área apilada muestra la evolución de la composición; con pocos, barras."},
+  {p:"Después de una recarga, ¿qué pasa con un snapshot?",o:["Se actualiza con los datos nuevos","No cambia: es una foto estática","Se borra"],a:1,e:"El snapshot guarda el estado del objeto en un momento; el bookmark, en cambio, reaplica selecciones sobre los datos nuevos."},
+  {p:"¿Qué necesita ColorMix1 como primer parámetro?",o:["Un valor entre 0 y 1","El nombre de una dimensión","Un código RGB"],a:0,e:"El valor (por ejemplo Ventas / Máximo) define en qué punto del degradé entre los dos colores cae cada barra."}]},
+ m3:{t:"Cuestionario · Scripting",q:[
+  {p:"Si Variables.qvs no existe, ¿qué hace $(Must_Include=…)?",o:["Sigue la recarga sin aviso","Detiene la recarga con error","Crea el archivo vacío"],a:1,e:"Must_Include es para lo imprescindible: falla de forma visible. Include, en cambio, sigue sin avisar."},
+  {p:"¿Cuál de estos cambios mantiene la carga de QVD optimizada?",o:["Agregar 'Ejemplo' AS NuevoCampo","WHERE Año >= 2024","WHERE Exists(UWI) con un solo campo"],a:2,e:"Exists() de un solo parámetro es la excepción; los campos calculados y las condiciones WHERE desoptimizan."},
+  {p:"¿Por qué cargar archivos con comodín y un preceding load puede crear una clave sintética?",o:["Porque el preceding load solo se aplica al primer archivo","Porque el comodín duplica los archivos","Porque Qlik no lee CSV con comodín"],a:0,e:"Las tablas quedan con campos distintos, no se concatenan y comparten varios campos: aparece $Syn."},
+  {p:"¿Qué necesita Concat() cuando se usa en el script?",o:["Un ORDER BY","Un GROUP BY","Un JOIN"],a:1,e:"Es una función de agregación; en la interfaz su equivalente es combinarla con Aggr()."},
+  {p:"¿Cuál es la ventaja principal de un flag?",o:["La lógica se evalúa una vez en la recarga y la interfaz responde más rápido","Reduce el tamaño del QVD a la mitad","Reemplaza a las medidas maestras"],a:0,e:"El gráfico solo suma o filtra por un campo 1/0 ya calculado."}]},
+ m4:{t:"Cuestionario · Apps e interfaz",q:[
+  {p:"Necesitás cambiar el diseño de una app ya publicada. ¿Qué hacés?",o:["La despublico, edito y vuelvo a publicar","La edito directamente en el stream","La duplico, edito la copia y uso Replace existing app"],a:2,e:"Publicar no se deshace y la app publicada no cambia su diseño."},
+  {p:"¿Qué es una hoja de comunidad?",o:["Una hoja que creó y compartió un usuario","Una hoja aprobada por el autor","Una hoja privada en borrador"],a:0,e:"Las de comunidad las crean y publican otros usuarios con acceso a la app."},
+  {p:"En el gráfico de control del libro, ¿cómo se calculan los límites de la banda?",o:["Mínimo y máximo","Promedio ± desvío estándar","Mediana ± 10 %"],a:1,e:"Lo que queda fuera de promedio ± desvío se destaca como fuera de lo normal."},
+  {p:"¿Cómo usa el libro Fractile() para manejar atípicos?",o:["Para quitar el 10 % superior e inferior del cálculo","Para ordenar las barras","Para colorear los valores negativos"],a:0,e:"Calcula los cortes del 10 % y 90 % y deja afuera los extremos; va dentro de Aggr()."},
+  {p:"¿Cómo se arma una barra sin dimensión en Qlik Sense según el libro?",o:["Con una extensión","Con una dimensión «Dummy» de un solo valor y la etiqueta oculta","No se puede"],a:1,e:"Qlik no permite barras sin dimensión; la dimensión ficticia resuelve el caso."}]}};
+function bestKey(m){return "lab-qlik-best-"+m}
+function updateTags(){Object.keys(QUIZ).forEach(m=>{const b=store.get(bestKey(m));const n=QUIZ[m].q.length;const txtv=b!=null?`${b}/${n}`:"";
+  $$(`[data-tag="${m}"]`).forEach(t=>{t.textContent=txtv;t.classList.toggle("done",b===n)});
+  const c=$(`#modcard-${m} .st`);if(c)c.textContent=b!=null?`Mejor resultado: ${b}/${n}`:"Sin cuestionario completado"})}
+$$("[data-quiz]").forEach(box=>{const m=box.getAttribute("data-quiz"),Q=QUIZ[m];
+ let h=`<div class="quiz-head"><h3>${esc(Q.t)}</h3><span class="quiz-best" data-role="best"></span></div>`;
+ Q.q.forEach((q,i)=>{h+=`<fieldset class="q"><legend>${i+1}. ${esc(q.p)}</legend>`+q.o.map((o,j)=>`<label><input type="radio" name="${m}-q${i}" id="${m}-q${i}-${j}" value="${j}"> <span>${esc(o)}</span></label>`).join("")+`<p class="fb" data-fb="${i}" hidden></p></fieldset>`});
+ h+=`<div class="quiz-foot"><button class="btn primary" type="button" data-role="check">Comprobar respuestas</button><button class="btn" type="button" data-role="retry">Reintentar</button><span class="score" data-role="score" aria-live="polite"></span></div>`;box.innerHTML=h;
+ const showBest=()=>{const b=store.get(bestKey(m));$("[data-role=best]",box).textContent=b!=null?`Tu mejor resultado: ${b}/${Q.q.length}`:""};showBest();
+ $("[data-role=check]",box).addEventListener("click",()=>{let ok=0,answered=0;Q.q.forEach((q,i)=>{const sel=$(`input[name="${m}-q${i}"]:checked`,box);const fb=$(`[data-fb="${i}"]`,box);
+   $$(`input[name="${m}-q${i}"]`,box).forEach(inp=>inp.closest("label").classList.remove("right","wrong"));
+   if(!sel){fb.hidden=false;fb.innerHTML="Elegí una opción.";return}answered++;const j=+sel.value;
+   $(`#${m}-q${i}-${q.a}`,box).closest("label").classList.add("right");if(j!==q.a)sel.closest("label").classList.add("wrong");else ok++;
+   fb.hidden=false;fb.innerHTML=(j===q.a?'<b class="r">Correcto.</b> ':'<b class="w">No es esa.</b> ')+esc(q.e)});
+  $("[data-role=score]",box).textContent=answered<Q.q.length?`Respondiste ${answered} de ${Q.q.length}. Resultado parcial: ${ok}`:`Resultado: ${ok} de ${Q.q.length}`;
+  if(answered===Q.q.length){const b=store.get(bestKey(m));if(b==null||ok>b)store.set(bestKey(m),ok);showBest();updateTags()}});
+ $("[data-role=retry]",box).addEventListener("click",()=>{$$("input[type=radio]",box).forEach(i=>{i.checked=false;i.closest("label").classList.remove("right","wrong")});$$(".fb",box).forEach(f=>f.hidden=true);$("[data-role=score]",box).textContent=""})});
+
+/* ---------- Portada y tema ---------- */
+const MODS=[["m1","Módulo 1","Datos","Conexiones, modelo y Master Library"],["m2","Módulo 2","Visualizaciones","DAR, gráficos, color y stories"],["m3","Módulo 3","Scripting","Include, QVD optimizado, flags y más"],["m4","Módulo 4","Apps e interfaz","Publicación, KPIs y atípicos"]];
+$("#modcards").innerHTML=MODS.map(m=>`<a class="modcard" id="modcard-${m[0]}" href="#${m[0]}"><span class="n">${m[1]}</span><strong>${m[2]}</strong><span class="s">${m[3]}</span><span class="st"></span></a>`).join("");
+updateTags();
+if(location.hash){const el=document.getElementById(location.hash.slice(1));if(el)setTimeout(()=>el.scrollIntoView(),50)}
+})();
+</script>
+</body>
+</html>
