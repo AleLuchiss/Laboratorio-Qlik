@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Curso interactivo sobre los capítulos 1 a 4 del Qlik Sense Cookbook, con laboratorios de sintaxis y un cuestionario por módulo.">
+<meta name="theme-color" content="#002B37">
 <style>
 html,body{margin:0}
 body{-webkit-text-size-adjust:100%}
@@ -13,32 +14,41 @@ img{max-width:100%}
 </style>
 <title>Laboratorio Qlik Sense</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Sans+Condensed:wght@600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2064%2064%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23002B37%22/%3E%3Crect%20x%3D%220.5%22%20y%3D%220.5%22%20width%3D%2263%22%20height%3D%2263%22%20rx%3D%2213.5%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-opacity%3D%22.16%22/%3E%3Crect%20x%3D%2213%22%20y%3D%2236%22%20width%3D%229%22%20height%3D%2215%22%20rx%3D%222%22%20fill%3D%22%2300D979%22%20fill-opacity%3D%22.45%22/%3E%3Crect%20x%3D%2227.5%22%20y%3D%2226%22%20width%3D%229%22%20height%3D%2225%22%20rx%3D%222%22%20fill%3D%22%2300D979%22%20fill-opacity%3D%22.75%22/%3E%3Crect%20x%3D%2242%22%20y%3D%2215%22%20width%3D%229%22%20height%3D%2236%22%20rx%3D%222%22%20fill%3D%22%2300D979%22/%3E%3Ccircle%20cx%3D%2246.5%22%20cy%3D%229.5%22%20r%3D%223%22%20fill%3D%22%23F8F8F8%22/%3E%3C/svg%3E">
 <style>
 /* Layout: banda de portada a todo el ancho; debajo, índice lateral fijo + columna de lecciones. Cada lección = explicación + laboratorio (controles | resultado). */
 :root{
-  --bg:#F2F4F1; --surface:#FFFFFF; --surface-2:#E9ECE7; --ink:#16212B; --muted:#55606A; --line:#D5DAD4;
-  --accent:#0B6B6A; --accent-ink:#FFFFFF; --accent-soft:#DCEEEC; --warn:#A8521A; --warn-soft:#F8E6D8;
-  --ok:#2C7A4B; --ok-soft:#DDF0E3; --bad:#B3261E; --bad-soft:#F8DEDB; --code-bg:#EBEEE9; --code-ink:#1D2A35; --code-dim:#6B7680;
-  --band:#16212B; --band-ink:#F2F4F1; --band-muted:#A9B6C0; --band-accent:#5FC4C2;
-  --c1:#2F6FB0; --c2:#D07A2B; --c3:#3E9B6A; --c4:#8A5BB5;
-  --f-display:'IBM Plex Sans Condensed','IBM Plex Sans',Arial,sans-serif;
-  --f-body:'IBM Plex Sans',Arial,sans-serif;
+  /* Paleta Data IQ: petróleo #002B37, verde #00D979, verde oscuro #00574A, grises #F8F8F8 / #EBEAEA */
+  --bg:#F5F7F7; --surface:#FFFFFF; --surface-2:#EDF1F1; --ink:#0B2128; --muted:#4D6168; --line:#D5DEDF;
+  --accent:#00574A; --accent-ink:#FFFFFF; --accent-soft:#DCF4E9;
+  --brand:#002B37; --brand-green:#00D979; --brand-green-ink:#002B37;
+  --warn:#A8521A; --warn-soft:#F8E6D8; --ok:#007A55; --ok-soft:#DCF4E9; --bad:#B3261E; --bad-soft:#F8DEDB;
+  --code-bg:#EDF1F1; --code-ink:#0B2128; --code-dim:#637780;
+  --band:#002B37; --band-ink:#F8F8F8; --band-muted:#A6C0C5; --band-accent:#00D979; --band-line:rgba(248,248,248,.14);
+  --c1:#0F6E8C; --c2:#E08A2E; --c3:#00A862; --c4:#6B5BB5;
+  --f-display:'Inter',Arial,sans-serif;
+  --f-body:'Inter',Arial,sans-serif;
   --f-mono:'JetBrains Mono','Courier New',monospace;
-  --r:10px;
+  --r:12px;
+  --shadow:0 1px 2px rgba(0,43,55,.06),0 6px 20px rgba(0,43,55,.06);
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#10171D; --surface:#17212A; --surface-2:#1E2A35; --ink:#E6ECEF; --muted:#9AA8B2; --line:#2A3742;
-  --accent:#4FC1BE; --accent-ink:#0D1A1A; --accent-soft:#163A3A; --warn:#E8A15A; --warn-soft:#3A2A1C;
-  --ok:#6CC08F; --ok-soft:#183324; --bad:#F08A80; --bad-soft:#3D1D1A; --code-bg:#0D1419; --code-ink:#DCE4E8; --code-dim:#7D8B95;
-  --band:#0B1116; --band-ink:#E6ECEF; --band-muted:#8FA0AB; --band-accent:#5FC4C2;
-  --c1:#6FA6E0; --c2:#E89A55; --c3:#6CC08F; --c4:#B48BDD; color-scheme:dark}}
+  --bg:#00161C; --surface:#002029; --surface-2:#012A34; --ink:#E6F0F1; --muted:#93AEB4; --line:#0F3B46;
+  --accent:#00D979; --accent-ink:#002B37; --accent-soft:#063A2E;
+  --warn:#E8A15A; --warn-soft:#3A2A1C; --ok:#3EE29A; --ok-soft:#08382A; --bad:#F08A80; --bad-soft:#3D1D1A;
+  --code-bg:#00121A; --code-ink:#D8E8EA; --code-dim:#7C979D;
+  --band:#000F14; --band-ink:#E6F0F1; --band-muted:#8FAAB0; --band-accent:#00D979; --band-line:rgba(230,240,241,.12);
+  --c1:#5FB8D6; --c2:#F0A65A; --c3:#3EE29A; --c4:#A99BE8;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25); color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#10171D; --surface:#17212A; --surface-2:#1E2A35; --ink:#E6ECEF; --muted:#9AA8B2; --line:#2A3742;
-  --accent:#4FC1BE; --accent-ink:#0D1A1A; --accent-soft:#163A3A; --warn:#E8A15A; --warn-soft:#3A2A1C;
-  --ok:#6CC08F; --ok-soft:#183324; --bad:#F08A80; --bad-soft:#3D1D1A; --code-bg:#0D1419; --code-ink:#DCE4E8; --code-dim:#7D8B95;
-  --band:#0B1116; --band-ink:#E6ECEF; --band-muted:#8FA0AB; --band-accent:#5FC4C2;
-  --c1:#6FA6E0; --c2:#E89A55; --c3:#6CC08F; --c4:#B48BDD; color-scheme:dark}
+  --bg:#00161C; --surface:#002029; --surface-2:#012A34; --ink:#E6F0F1; --muted:#93AEB4; --line:#0F3B46;
+  --accent:#00D979; --accent-ink:#002B37; --accent-soft:#063A2E;
+  --warn:#E8A15A; --warn-soft:#3A2A1C; --ok:#3EE29A; --ok-soft:#08382A; --bad:#F08A80; --bad-soft:#3D1D1A;
+  --code-bg:#00121A; --code-ink:#D8E8EA; --code-dim:#7C979D;
+  --band:#000F14; --band-ink:#E6F0F1; --band-muted:#8FAAB0; --band-accent:#00D979; --band-line:rgba(230,240,241,.12);
+  --c1:#5FB8D6; --c2:#F0A65A; --c3:#3EE29A; --c4:#A99BE8;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25); color-scheme:dark}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
@@ -52,19 +62,45 @@ code,.mono{font-family:var(--f-mono);font-size:.88em}
 .wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
 /* Portada */
-.hero{background:var(--band);color:var(--band-ink)}
-.hero .wrap{padding-block:56px 48px;display:grid;gap:28px}
+.hero{background:radial-gradient(ellipse at 88% 0%,rgba(0,217,121,.22),transparent 55%),radial-gradient(ellipse at 0% 100%,rgba(0,87,74,.55),transparent 60%),var(--band);color:var(--band-ink)}
+.hero .wrap{padding-block:20px 48px;display:grid;gap:28px}
+.brandbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:16px;border-bottom:1px solid var(--band-line);flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;color:var(--band-ink);text-decoration:none;font-weight:700;letter-spacing:-.01em}
+.brand svg{width:36px;height:36px;flex:none}
+.brand small{display:block;font-weight:500;font-size:12px;color:var(--band-muted);letter-spacing:.02em}
+.brandbar nav{display:flex;gap:4px;flex-wrap:wrap}
+.brandbar nav a{color:var(--band-muted);text-decoration:none;font-size:14px;padding:6px 10px;border-radius:999px}
+.brandbar nav a:hover{color:var(--band-ink);background:var(--band-line)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:40px;align-items:center;padding-top:20px}
+@media (max-width:860px){.hero-grid{grid-template-columns:minmax(0,1fr);gap:24px}}
+.hero-copy{display:grid;gap:18px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+.cta{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;padding:11px 18px;border-radius:999px;text-decoration:none}
+.cta.main{background:var(--brand-green);color:var(--brand-green-ink)}
+.cta.main:hover{filter:brightness(1.06)}
+.cta.ghost{color:var(--band-ink);border:1px solid var(--band-line)}
+.cta.ghost:hover{border-color:var(--band-accent)}
+.stats{display:flex;gap:28px;flex-wrap:wrap;padding-top:6px}
+.stats div{display:grid;gap:2px}
+.stats b{font-size:28px;font-weight:800;color:var(--band-ink);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stats span{font-size:13px;color:var(--band-muted)}
+.term{border:1px solid var(--band-line);border-radius:14px;background:rgba(0,0,0,.22);overflow:hidden;min-width:0}
+.term-bar{display:flex;align-items:center;gap:6px;padding:10px 14px;border-bottom:1px solid var(--band-line);font-family:var(--f-mono);font-size:12px;color:var(--band-muted)}
+.term-bar i{width:10px;height:10px;border-radius:50%;background:var(--band-line)}
+.term-bar i:nth-child(3){background:var(--band-accent)}
+.term-bar span{margin-left:8px}
 .eyebrow{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
 .hero .eyebrow{color:var(--band-accent)}
-.hero h1{font-family:var(--f-display);font-weight:700;font-size:clamp(40px,7vw,76px);letter-spacing:-.01em}
+.hero h1{font-family:var(--f-display);font-weight:800;font-size:clamp(40px,6.4vw,72px);letter-spacing:-.035em;line-height:1.02}
+.hero h1 em{font-style:normal;color:var(--band-accent)}
 .hero .lede{font-size:19px;color:var(--band-muted);max-width:62ch}
-.hero-code{font-family:var(--f-mono);font-size:14px;line-height:1.7;color:var(--band-muted);border-left:3px solid var(--band-accent);padding:4px 0 4px 16px;max-width:100%;overflow-x:auto;white-space:pre}
+.hero-code{font-family:var(--f-mono);font-size:13.5px;line-height:1.75;color:var(--band-muted);padding:16px 18px;max-width:100%;overflow-x:auto;white-space:pre}
 .hero-code b{color:var(--band-ink);font-weight:600}
 .modcards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 @media (max-width:860px){.modcards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:440px){.modcards{grid-template-columns:1fr}}
-.modcard{display:flex;flex-direction:column;gap:6px;padding:16px;border:1px solid #2C3A46;border-radius:var(--r);color:var(--band-ink);text-decoration:none;background:rgba(255,255,255,.03)}
-.modcard:hover{border-color:var(--band-accent)}
+.modcard{display:flex;flex-direction:column;gap:6px;padding:18px;border:1px solid var(--band-line);border-radius:var(--r);color:var(--band-ink);text-decoration:none;background:rgba(255,255,255,.04);transition:border-color .15s,transform .15s}
+.modcard:hover{border-color:var(--band-accent);transform:translateY(-2px)}
 .modcard .n{font-family:var(--f-mono);font-size:13px;color:var(--band-accent)}
 .modcard strong{font-size:17px}
 .modcard span.s{font-size:14px;color:var(--band-muted)}
@@ -83,25 +119,26 @@ nav.toc .label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;colo
 .theme-row button{font:inherit;font-size:13px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .theme-row button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 @media (max-width:900px){
+  .progress{display:none}
   nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;flex-direction:row;overflow-x:auto;background:var(--bg);padding-block:8px;border-bottom:1px solid var(--line)}
   nav.toc .label,.theme-row{display:none}
   nav.toc a{white-space:nowrap;border:1px solid var(--line)}
 }
 main{display:flex;flex-direction:column;gap:72px;min-width:0}
 .module{display:flex;flex-direction:column;gap:40px;scroll-margin-top:24px}
-.mod-head{display:grid;gap:10px;border-top:2px solid var(--ink);padding-top:20px}
-.mod-head h2{font-family:var(--f-display);font-size:clamp(30px,4.4vw,44px);font-weight:700}
+.mod-head{display:grid;gap:10px;border-top:3px solid var(--accent);padding-top:22px}
+.mod-head h2{font-family:var(--f-display);font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-.025em}
 .mod-head p{color:var(--muted);max-width:66ch;font-size:17px}
 .lesson{display:grid;gap:16px;scroll-margin-top:24px}
-.lesson h3{font-size:24px;font-weight:600}
-.lesson .num{font-family:var(--f-mono);font-size:14px;color:var(--accent);margin-right:8px}
+.lesson h3{font-size:23px;font-weight:700;letter-spacing:-.015em}
+.lesson .num{display:inline-block;font-family:var(--f-mono);font-size:13px;font-weight:600;color:var(--accent);background:var(--accent-soft);border-radius:6px;padding:2px 7px;margin-right:10px;vertical-align:3px}
 .lesson .body{display:grid;gap:10px;max-width:70ch}
 .lesson .body p{color:var(--ink)}
 .practice{font-size:15px;color:var(--muted);border-left:3px solid var(--warn);padding-left:12px;max-width:70ch}
 .practice b{color:var(--warn)}
 
 /* Laboratorio */
-.lab{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden}
+.lab{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden;box-shadow:var(--shadow)}
 @media (max-width:760px){.lab{grid-template-columns:minmax(0,1fr)}}
 .lab .ctrl{padding:20px;display:flex;flex-direction:column;gap:16px;background:var(--surface-2);min-width:0}
 .lab .out{padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
@@ -112,7 +149,7 @@ main{display:flex;flex-direction:column;gap:72px;min-width:0}
 .seg button,.btn{font:inherit;font-size:14px;padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;text-align:left}
 .seg button:hover,.btn:hover{border-color:var(--accent)}
 .seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn.primary{background:var(--brand-green);border-color:var(--brand-green);color:var(--brand-green-ink);font-weight:600}
 .check{display:flex;gap:10px;align-items:flex-start;font-size:14px;cursor:pointer}
 .check input{margin-top:3px;accent-color:var(--accent);width:16px;height:16px;flex:none}
 select,input[type=text],input[type=number]{font:inherit;font-size:14px;padding:7px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);max-width:100%}
@@ -154,7 +191,9 @@ table.t tr.miss td{color:var(--bad)}
 .copy{align-self:flex-start}
 
 /* Cuestionario */
-.quiz{border:1px solid var(--ink);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:20px;background:var(--surface)}
+.quiz{border:1px solid var(--line);border-top:4px solid var(--brand-green);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:20px;background:var(--surface);box-shadow:var(--shadow)}
+.next{display:inline-flex;gap:8px;align-items:center;font-weight:600;text-decoration:none;color:var(--accent)}
+.next:hover{text-decoration:underline}
 .quiz-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
 .quiz-head h3{font-size:22px}
 .quiz-best{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
@@ -173,28 +212,54 @@ fieldset.q label.wrong{border-color:var(--bad);background:var(--bad-soft)}
 /* Recursos */
 .book{display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;align-items:start;border:1px solid var(--line);border-radius:var(--r);padding:24px;background:var(--surface)}
 @media (max-width:560px){.book{grid-template-columns:1fr}}
-.spine{width:120px;height:160px;border-radius:4px 8px 8px 4px;background:var(--band);color:var(--band-ink);display:flex;flex-direction:column;justify-content:space-between;padding:14px;font-family:var(--f-display);font-weight:700;font-size:18px;line-height:1.1;border-left:8px solid var(--band-accent)}
+.spine{width:120px;height:160px;border-radius:4px 8px 8px 4px;background:var(--band);color:var(--band-ink);display:flex;flex-direction:column;justify-content:space-between;padding:14px;font-family:var(--f-display);font-weight:800;font-size:17px;line-height:1.1;letter-spacing:-.02em;border-left:8px solid var(--band-accent)}
 .spine small{font-family:var(--f-mono);font-weight:400;font-size:11px;color:var(--band-muted)}
-footer{border-top:1px solid var(--line);color:var(--muted);font-size:14px}
-footer .wrap{padding-block:24px}
+footer{background:var(--band);color:var(--band-muted);font-size:14px}
+footer .wrap{padding-block:32px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+footer .brand{font-size:15px}
+footer p{max-width:60ch}
+.progress{padding:0 10px 14px;display:grid;gap:6px}
+.progress .bar{height:6px;border-radius:999px;background:var(--surface-2);overflow:hidden}
+.progress .bar i{display:block;height:100%;width:0;background:var(--brand-green);transition:width .3s}
+.progress span{font-size:12px;color:var(--muted)}
 </style>
 </head>
 <body>
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">Qlik Sense Cookbook · Capítulos 1 a 4</p>
-    <h1>Laboratorio Qlik Sense</h1>
-    <p class="lede">Las ideas principales del libro, con ejemplos que podés manipular: cambiá una opción y mirá cómo responde el script, el modelo o el gráfico. Cada módulo termina con un cuestionario corto.</p>
-    <div class="hero-code" aria-label="Ejemplo de script">// Variables necesarias
+    <div class="brandbar">
+      <a class="brand" href="#top" id="top"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#002B37"/><rect x="0.5" y="0.5" width="63" height="63" rx="13.5" fill="none" stroke="#FFFFFF" stroke-opacity=".16"/><rect x="13" y="36" width="9" height="15" rx="2" fill="#00D979" fill-opacity=".45"/><rect x="27.5" y="26" width="9" height="25" rx="2" fill="#00D979" fill-opacity=".75"/><rect x="42" y="15" width="9" height="36" rx="2" fill="#00D979"/><circle cx="46.5" cy="9.5" r="3" fill="#F8F8F8"/></svg><span>Laboratorio Qlik Sense<small>Capacitación práctica · Cap. 1 a 4</small></span></a>
+      <nav aria-label="Secciones"><a href="#m1">Datos</a><a href="#m2">Visualizaciones</a><a href="#m3">Scripting</a><a href="#m4">Apps</a><a href="#recursos">Recursos</a></nav>
+    </div>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Qlik Sense Cookbook · Capítulos 1 a 4</p>
+        <h1>Aprendé Qlik Sense <em>tocando el código</em></h1>
+        <p class="lede">Las ideas principales del libro con ejemplos que podés manipular: cambiá una opción y mirá cómo responde el script, el modelo o el gráfico. Cada módulo termina con un cuestionario.</p>
+        <div class="hero-actions"><a class="cta main" href="#m1">Empezar por el módulo 1 →</a><a class="cta ghost" href="#l-optimizado">Ver la carga optimizada</a></div>
+        <div class="stats"><div><b>4</b><span>módulos</span></div><div><b>16</b><span>laboratorios</span></div><div><b>19</b><span>preguntas</span></div></div>
+      </div>
+      <div class="term">
+        <div class="term-bar"><i></i><i></i><i></i><span>Script · Main</span></div>
+        <div class="hero-code" aria-label="Ejemplo de script">// Variables necesarias
 <b>$(Must_Include=lib://Scripts/Variables.qvs);</b>
+
 // Configuraciones opcionales
-<b>$(Include=lib://Scripts/Colores.qvs);</b></div>
+<b>$(Include=lib://Scripts/Colores.qvs);</b>
+
+Produccion:
+<b>LOAD</b> UWI, Fecha, Produccion
+<b>FROM</b> [lib://QVD/Produccion.qvd] (qvd)
+<b>WHERE</b> Exists(UWI);   // sigue optimizada</div>
+      </div>
+    </div>
     <div class="modcards" id="modcards"></div>
   </div>
 </header>
 
 <div class="wrap layout">
   <nav class="toc" aria-label="Módulos">
+    <div class="progress"><div class="bar"><i id="prog-bar"></i></div><span id="prog-txt">0 de 4 cuestionarios completos</span></div>
     <p class="label">Módulos</p>
     <a href="#m1"><span>1 · Datos</span><span class="tag" data-tag="m1"></span></a>
     <a href="#m2"><span>2 · Visualizaciones</span><span class="tag" data-tag="m2"></span></a>
@@ -599,7 +664,7 @@ footer .wrap{padding-block:24px}
   </section>
   </main>
 </div>
-<footer><div class="wrap">Laboratorio basado en los capítulos 1 a 4 de «Qlik Sense Cookbook». Los datos de los ejemplos son ficticios.</div></footer>
+<footer><div class="wrap"><a class="brand" href="#top"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#002B37"/><rect x="0.5" y="0.5" width="63" height="63" rx="13.5" fill="none" stroke="#FFFFFF" stroke-opacity=".16"/><rect x="13" y="36" width="9" height="15" rx="2" fill="#00D979" fill-opacity=".45"/><rect x="27.5" y="26" width="9" height="25" rx="2" fill="#00D979" fill-opacity=".75"/><rect x="42" y="15" width="9" height="36" rx="2" fill="#00D979"/><circle cx="46.5" cy="9.5" r="3" fill="#F8F8F8"/></svg><span>Laboratorio Qlik Sense<small>Capacitación práctica · Cap. 1 a 4</small></span></a><p>Basado en los capítulos 1 a 4 de «Qlik Sense Cookbook» (Packt, 2015). Los datos de los ejemplos son ficticios.</p></div></footer>
 
 <script>
 (function(){
@@ -907,11 +972,15 @@ const QUIZ={
 function bestKey(m){return "lab-qlik-best-"+m}
 function updateTags(){Object.keys(QUIZ).forEach(m=>{const b=store.get(bestKey(m));const n=QUIZ[m].q.length;const txtv=b!=null?`${b}/${n}`:"";
   $$(`[data-tag="${m}"]`).forEach(t=>{t.textContent=txtv;t.classList.toggle("done",b===n)});
-  const c=$(`#modcard-${m} .st`);if(c)c.textContent=b!=null?`Mejor resultado: ${b}/${n}`:"Sin cuestionario completado"})}
+  const c=$(`#modcard-${m} .st`);if(c)c.textContent=b!=null?`Mejor resultado: ${b}/${n}`:"Sin cuestionario completado"});
+ const done=Object.keys(QUIZ).filter(m=>store.get(bestKey(m))!=null).length;const pb=$("#prog-bar"),pt=$("#prog-txt");
+ if(pb)pb.style.width=(done/4*100)+"%";if(pt)pt.textContent=`${done} de 4 cuestionarios completos`}
 $$("[data-quiz]").forEach(box=>{const m=box.getAttribute("data-quiz"),Q=QUIZ[m];
  let h=`<div class="quiz-head"><h3>${esc(Q.t)}</h3><span class="quiz-best" data-role="best"></span></div>`;
  Q.q.forEach((q,i)=>{h+=`<fieldset class="q"><legend>${i+1}. ${esc(q.p)}</legend>`+q.o.map((o,j)=>`<label><input type="radio" name="${m}-q${i}" id="${m}-q${i}-${j}" value="${j}"> <span>${esc(o)}</span></label>`).join("")+`<p class="fb" data-fb="${i}" hidden></p></fieldset>`});
- h+=`<div class="quiz-foot"><button class="btn primary" type="button" data-role="check">Comprobar respuestas</button><button class="btn" type="button" data-role="retry">Reintentar</button><span class="score" data-role="score" aria-live="polite"></span></div>`;box.innerHTML=h;
+ h+=`<div class="quiz-foot"><button class="btn primary" type="button" data-role="check">Comprobar respuestas</button><button class="btn" type="button" data-role="retry">Reintentar</button><span class="score" data-role="score" aria-live="polite"></span></div>`;
+ const NX={m1:["#m2","Siguiente: Visualizaciones"],m2:["#m3","Siguiente: Scripting"],m3:["#m4","Siguiente: Apps e interfaz"],m4:["#recursos","Ir a recursos"]}[m];
+ h+=`<a class="next" href="${NX[0]}">${NX[1]} →</a>`;box.innerHTML=h;
  const showBest=()=>{const b=store.get(bestKey(m));$("[data-role=best]",box).textContent=b!=null?`Tu mejor resultado: ${b}/${Q.q.length}`:""};showBest();
  $("[data-role=check]",box).addEventListener("click",()=>{let ok=0,answered=0;Q.q.forEach((q,i)=>{const sel=$(`input[name="${m}-q${i}"]:checked`,box);const fb=$(`[data-fb="${i}"]`,box);
    $$(`input[name="${m}-q${i}"]`,box).forEach(inp=>inp.closest("label").classList.remove("right","wrong"));
